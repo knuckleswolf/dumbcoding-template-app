@@ -1,4 +1,4 @@
-# TanStack Application Template
+# Dumbcoding Application Template
 
 Neutral application template for Vite, TanStack Start/Router, React, Tailwind CSS, Biome, Vitest,
 and the repository agent workflow.
@@ -77,8 +77,8 @@ Use `pnpm verify -- <changed files...>` after code, config, build-graph, or tool
 ## Container Build
 
 ```bash
-docker build -t tanstack-application-template .
-docker run --rm -p 3000:3000 tanstack-application-template
+docker build -t dumbcoding-template-app .
+docker run --rm -p 3000:3000 dumbcoding-template-app
 ```
 
 The image is deployment-provider agnostic. Override `PORT` and `HOST` at runtime when your target

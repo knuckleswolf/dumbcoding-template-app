@@ -1,5 +1,5 @@
 {
-  "name": "tanstack-application-template",
+  "name": "dumbcoding-template-app",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.7.0",
