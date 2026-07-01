@@ -1,0 +1,30 @@
+import { queryOptions } from '@tanstack/react-query';
+
+import { fetch{{Resource}}, fetch{{Resources}} } from './methods';
+
+export const {{domain}}QueryKeys = {
+  all: ['{{domain}}'] as const,
+  resources: {
+    all: () => [...{{domain}}QueryKeys.all, 'resources'] as const,
+    list: () => [...{{domain}}QueryKeys.resources.all(), 'list'] as const,
+    detail: (id: string) => [...{{domain}}QueryKeys.resources.all(), id] as const,
+  },
+};
+
+export const {{resources}}QueryOptions = () =>
+  queryOptions({
+    queryKey: {{domain}}QueryKeys.resources.list(),
+    queryFn: async ({ signal }) => {
+      const response = await fetch{{Resources}}({ signal });
+      return response.data;
+    },
+  });
+
+export const {{resource}}QueryOptions = (id: string) =>
+  queryOptions({
+    queryKey: {{domain}}QueryKeys.resources.detail(id),
+    queryFn: async ({ signal }) => {
+      const response = await fetch{{Resource}}(id, { signal });
+      return response.data;
+    },
+  });

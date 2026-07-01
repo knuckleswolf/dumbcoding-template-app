@@ -1,0 +1,8 @@
+/**
+ * Data validation and transformation schemas.
+ *
+ * Use Zod, Valibot, or similar for runtime validation.
+ */
+
+// import { z } from 'zod';
+// export const {{ComponentName}}Schema = z.object({ ... });

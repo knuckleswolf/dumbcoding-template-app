@@ -1,0 +1,18 @@
+export class {{Domain}}ApiError extends Error {
+  constructor(
+    public statusCode: number,
+    public originalError: unknown
+  ) {
+    super(`API Error: ${statusCode}`);
+    this.name = '{{Domain}}ApiError';
+  }
+}
+
+export const normalize{{Domain}}Error = (error: unknown): {{Domain}}ApiError => {
+  if (error instanceof {{Domain}}ApiError) {
+    return error;
+  }
+
+  // Handle axios errors, network errors, etc.
+  return new {{Domain}}ApiError(500, error);
+};

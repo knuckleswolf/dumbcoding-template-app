@@ -1,0 +1,9 @@
+/**
+ * Business logic, domain models, and state management.
+ *
+ * Use for complex state, validation, API calls, or reducers.
+ * Keep UI rendering in {{component-name}}.tsx separate.
+ */
+
+// export const validate{{ComponentName}} = (data: unknown) => { ... };
+// export const {{ComponentName}}Reducer = (state, action) => { ... };

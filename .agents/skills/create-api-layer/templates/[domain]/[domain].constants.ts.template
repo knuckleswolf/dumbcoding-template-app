@@ -1,0 +1,4 @@
+export const {{DOMAIN}}_API_PATHS = {
+  resources: 'resources',
+  resource: (id: string) => `resources/${id}`,
+} as const;

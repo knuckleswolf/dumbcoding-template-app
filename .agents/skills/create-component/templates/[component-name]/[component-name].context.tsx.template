@@ -1,0 +1,28 @@
+import { createContext, useContext } from 'react';
+import type { ReactNode } from 'react';
+
+interface {{ComponentName}}ContextType {
+  // Define context shape
+}
+
+const {{ComponentName}}Context = createContext<{{ComponentName}}ContextType | undefined>(undefined);
+
+export const {{ComponentName}}Provider = ({ children }: { children: ReactNode }): ReactNode => {
+  const value: {{ComponentName}}ContextType = {
+    // Initialize context
+  };
+
+  return (
+    <{{ComponentName}}Context.Provider value={value}>
+      {children}
+    </{{ComponentName}}Context.Provider>
+  );
+};
+
+export const use{{ComponentName}}Context = () => {
+  const context = useContext({{ComponentName}}Context);
+  if (!context) {
+    throw new Error('use{{ComponentName}}Context must be used within {{ComponentName}}Provider');
+  }
+  return context;
+};

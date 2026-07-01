@@ -1,0 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+
+import { {{resource}}QueryOptions } from '../{{domain}}.query';
+
+export const use{{Resource}}Query = (id: string) => useQuery({{resource}}QueryOptions(id));

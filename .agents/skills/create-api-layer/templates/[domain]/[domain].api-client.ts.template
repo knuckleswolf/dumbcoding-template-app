@@ -1,0 +1,28 @@
+import axios from 'axios';
+
+import { normalize{{Domain}}Error } from './errors';
+
+export const create{{Domain}}ApiClient = () => {
+  const client = axios.create({
+    baseURL: import.meta.env.VITE_{{DOMAIN}}_API_BASE_URL ?? '/',
+    withCredentials: true,
+    validateStatus: (status) => status >= 200 && status < 300,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+
+  client.interceptors.response.use(
+    (response) => response,
+    (error: unknown) => {
+      throw normalize{{Domain}}Error(error);
+    },
+  );
+
+  return client;
+};
+
+export type {{Domain}}ApiClient = ReturnType<typeof create{{Domain}}ApiClient>;
+
+export const {{domain}}ApiClient = create{{Domain}}ApiClient();

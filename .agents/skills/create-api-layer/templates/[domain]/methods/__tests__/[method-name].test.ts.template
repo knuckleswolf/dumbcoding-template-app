@@ -1,0 +1,33 @@
+import type { AxiosResponse } from 'axios';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+import { {{domain}}ApiClient } from '../../{{domain}}.api-client';
+import type { {{Resource}} } from '../../types';
+import { {{methodName}} } from '../{{methodFileName}}';
+
+const createAxiosResponse = <TData,>(data: TData): AxiosResponse<TData> =>
+  ({
+    config: { headers: {} },
+    data,
+    headers: {},
+    status: 200,
+    statusText: 'OK',
+  }) as AxiosResponse<TData>;
+
+describe('{{methodName}}', () => {
+  const resource: {{Resource}} = {
+    id: 'resource-1',
+    name: 'Resource',
+  };
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('calls the domain client', async () => {
+    const get = vi.spyOn({{domain}}ApiClient, 'get').mockResolvedValue(createAxiosResponse(resource));
+
+    await expect({{methodName}}(resource.id)).resolves.toMatchObject({ data: resource });
+    expect(get).toHaveBeenCalledWith(`resources/${resource.id}`, {});
+  });
+});

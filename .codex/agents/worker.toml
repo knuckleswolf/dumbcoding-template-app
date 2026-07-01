@@ -1,0 +1,3 @@
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
+developer_instructions = "Implementation agent. Own exactly one package, module, feature subtree, or non-overlapping write set. Follow AGENTS.md, CONVENTION.md, and AI_STYLEGUIDE.md. Read docs/product.md only when product/demo behavior matters. Make minimal diffs, preserve public APIs unless the task requires changes, add or update relevant tests, and run biome check --write only on files you changed. Do not run repo-wide verification; leave final pnpm verify aggregation to the coordinating agent."

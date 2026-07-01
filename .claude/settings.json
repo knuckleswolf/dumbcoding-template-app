@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "^(Write|Edit|MultiEdit)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -lc 'FILE=\"$(jq -r \".tool_input.path // .tool_input.file_path // .tool_input.filePath // empty\" | head -n 1)\"; if [ -n \"$FILE\" ]; then node tooling/scripts/biome-after-edit.mjs \"$FILE\"; fi'"
+          }
+        ]
+      }
+    ]
+  }
+}

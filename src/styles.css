@@ -1,0 +1,205 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --bg-base: #f7f8fb;
+  --page-heading: #172033;
+  --page-body: #465064;
+  --page-kicker: #0f6f68;
+  --sea-ink: #172033;
+  --sea-ink-soft: #4f5b6f;
+  --surface-solid: #ffffff;
+  --surface-muted: #eef2f7;
+  --surface-inverse: #182033;
+  --line: #d8dee8;
+  --placeholder: #687489;
+  --action-primary: #2454c5;
+  --action-primary-hover: #1d429b;
+  --action-disabled: #475569;
+  --focus-ring: #2454c5;
+  --success-surface: #e8f6ee;
+  --success-text: #14532d;
+}
+
+:root[data-theme="dark"] {
+  --bg-base: #10131a;
+  --page-heading: #f6f7fb;
+  --page-body: #c8ceda;
+  --page-kicker: #7dd3fc;
+  --sea-ink: #edf2f7;
+  --sea-ink-soft: #aeb8c8;
+  --surface-solid: #171b24;
+  --surface-muted: #232938;
+  --surface-inverse: #111827;
+  --line: #323a4d;
+  --placeholder: #a6b0c0;
+  --action-primary: #2454c5;
+  --action-primary-hover: #3f6ee8;
+  --action-disabled: #475569;
+  --focus-ring: #3b82f6;
+  --success-surface: #10291c;
+  --success-text: #86efac;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-base: #10131a;
+    --page-heading: #f6f7fb;
+    --page-body: #c8ceda;
+    --page-kicker: #7dd3fc;
+    --sea-ink: #edf2f7;
+    --sea-ink-soft: #aeb8c8;
+    --surface-solid: #171b24;
+    --surface-muted: #232938;
+    --surface-inverse: #111827;
+    --line: #323a4d;
+    --placeholder: #a6b0c0;
+    --action-primary: #2454c5;
+    --action-primary-hover: #3f6ee8;
+    --action-disabled: #475569;
+    --focus-ring: #3b82f6;
+    --success-surface: #10291c;
+    --success-text: #86efac;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--page-body);
+  font-family: var(--font-sans);
+  background-color: var(--bg-base);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--action-primary);
+  text-decoration-color: color-mix(in oklab, var(--action-primary) 45%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  color: var(--action-primary-hover);
+}
+
+code {
+  font-size: 0.9em;
+  border: 1px solid var(--line);
+  background: color-mix(in oklab, var(--surface-strong) 82%, white 18%);
+  border-radius: 7px;
+  padding: 2px 7px;
+}
+
+pre code {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+.template-page {
+  width: min(1120px, calc(100% - 2rem));
+  min-height: 100vh;
+  margin-inline: auto;
+  padding-block: clamp(4rem, 8vh, 7rem);
+}
+
+.template-hero {
+  max-width: 760px;
+}
+
+.template-eyebrow {
+  margin: 0;
+  color: var(--page-kicker);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.template-title {
+  margin: 0.85rem 0 0;
+  color: var(--page-heading);
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.template-copy {
+  max-width: 640px;
+  margin: 1.25rem 0 0;
+  color: var(--page-body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: clamp(3rem, 7vh, 5rem);
+}
+
+.template-panel {
+  min-height: 11rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-solid);
+  padding: 1.25rem;
+}
+
+.template-panel h2 {
+  margin: 0;
+  color: var(--sea-ink);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.template-panel p {
+  margin: 0.75rem 0 0;
+  color: var(--sea-ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--action-primary) 22%, transparent);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .template-page {
+    padding-block: 3rem;
+  }
+
+  .template-title {
+    font-size: 2.75rem;
+  }
+
+  .template-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,24 @@
+import type { ReactNode } from 'react';
+import type { {{ComponentName}}Props } from './{{component-name}}.types';
+
+/**
+ * {{ComponentName}} UI primitive.
+ *
+ * @example
+ * ```tsx
+ * <{{ComponentName}} size="md">Content</{{ComponentName}}>
+ * ```
+ */
+export const {{ComponentName}} = ({
+  children,
+  className,
+  ...props
+}: {{ComponentName}}Props): ReactNode => {
+  return (
+    <div className={className} {...props}>
+      {children}
+    </div>
+  );
+};
+
+{{ComponentName}}.displayName = '{{ComponentName}}';

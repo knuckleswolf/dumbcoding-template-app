@@ -1,0 +1,13 @@
+import type { ReactNode } from 'react';
+
+export interface {{ComponentName}}Props {
+  /**
+   * Child content
+   */
+  children?: ReactNode;
+
+  /**
+   * CSS class name
+   */
+  className?: string;
+}

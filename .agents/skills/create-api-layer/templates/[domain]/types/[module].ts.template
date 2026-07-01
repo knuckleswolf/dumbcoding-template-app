@@ -1,0 +1,10 @@
+export interface {{Resource}} {
+  id: string;
+  name: string;
+}
+
+export interface {{Resource}}Input {
+  name: string;
+}
+
+export type {{Resource}}Response = {{Resource}};

@@ -1,0 +1,8 @@
+/**
+ * Component-specific hooks.
+ *
+ * Use this file for reusable internal logic specific to {{ComponentName}}.
+ * For cross-component hooks, create in shared `hooks/` layer instead.
+ */
+
+// export const use{{ComponentName}}State = () => { ... };

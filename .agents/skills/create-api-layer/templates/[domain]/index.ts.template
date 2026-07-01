@@ -1,0 +1,6 @@
+export * from './hooks';
+export * from './methods';
+export * from './{{domain}}.query';
+export type * from './types';
+export { create{{Domain}}ApiClient, type {{Domain}}ApiClient, {{domain}}ApiClient } from './{{domain}}.api-client';
+export * from './{{domain}}.constants';

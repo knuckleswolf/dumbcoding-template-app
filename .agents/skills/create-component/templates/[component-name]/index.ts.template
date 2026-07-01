@@ -1,0 +1,2 @@
+export { {{ComponentName}} } from './{{component-name}}';
+export type { {{ComponentName}}Props } from './{{component-name}}.types';

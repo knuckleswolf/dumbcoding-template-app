@@ -1,0 +1,8 @@
+import type { AxiosRequestConfig } from 'axios';
+
+import { {{domain}}ApiClient } from '../{{domain}}.api-client';
+import { {{DOMAIN}}_API_PATHS } from '../{{domain}}.constants';
+import type { {{Resource}} } from '../types';
+
+export const {{methodName}} = (id: string, config: AxiosRequestConfig = {}) =>
+  {{domain}}ApiClient.get<{{Resource}}>({{DOMAIN}}_API_PATHS.resource(id), config);

@@ -1,0 +1,2 @@
+export { use{{Resource}}Query } from './use-{{methodFileName}}-query';
+export { use{{MethodName}}Mutation } from './use-{{methodFileName}}-mutation';

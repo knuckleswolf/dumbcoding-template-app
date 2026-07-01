@@ -1,0 +1,17 @@
+import type { UseMutationOptions } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import type { AxiosResponse } from 'axios';
+
+import { {{methodName}} } from '../methods';
+import type { {{Resource}}, {{Resource}}Input } from '../types';
+
+type {{Resource}}MutationOptions = Omit<
+  UseMutationOptions<AxiosResponse<{{Resource}}>, Error, {{Resource}}Input>,
+  'mutationFn'
+>;
+
+export const use{{MethodName}}Mutation = (options: {{Resource}}MutationOptions = {}) =>
+  useMutation({
+    ...options,
+    mutationFn: (input: {{Resource}}Input) => {{methodName}}({ data: input }),
+  });

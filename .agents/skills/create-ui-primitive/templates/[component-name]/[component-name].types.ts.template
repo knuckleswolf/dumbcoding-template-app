@@ -1,0 +1,28 @@
+import type { ReactNode } from 'react';
+
+export type {{ComponentName}}Variant = 'default' | 'primary' | 'secondary';
+export type {{ComponentName}}Size = 'sm' | 'md' | 'lg';
+
+export interface {{ComponentName}}Props {
+  /**
+   * Child content
+   */
+  children?: ReactNode;
+
+  /**
+   * Visual variant
+   * @default 'default'
+   */
+  variant?: {{ComponentName}}Variant;
+
+  /**
+   * Size variant
+   * @default 'md'
+   */
+  size?: {{ComponentName}}Size;
+
+  /**
+   * CSS class name
+   */
+  className?: string;
+}

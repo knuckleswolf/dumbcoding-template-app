@@ -1,0 +1,86 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.pnpm-store
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+.playwright-cli
+/playwright-report
+/playwright-report-tma
+/test-results
+/blob-report
+*.test-results
+/test-results/
+/test-results-tma/
+
+# next.js
+/.next/
+/.next-tma/
+/out/
+
+# production
+/build
+dist
+dist-ssr
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+.env
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# sensitive and proprietary
+.env.local
+.env.production
+.env.redis
+secrets/
+*.key
+*.pem
+credentials.json
+config/secrets.ts
+
+# IDE specific (keep settings but ignore workspace)
+.idea/workspace.xml
+.idea/tasks.xml
+.vscode/launch.json
+.vscode/*.code-workspace
+!/nul
+
+.temp
+certificates
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+todos.json.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+todos.json

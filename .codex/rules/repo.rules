@@ -1,0 +1,4 @@
+# See https://developers.openai.com/codex/rules
+prefix_rule(pattern = ["pnpm", "add"], decision = "prompt", justification = "Deps require approval.")
+prefix_rule(pattern = ["yarn", "add"], decision = "forbidden", justification = "Use pnpm in this repo.")
+prefix_rule(pattern = ["rm", "-rf"], decision = "forbidden", justification = "Destructive.")

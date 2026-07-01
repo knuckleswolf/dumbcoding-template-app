@@ -1,0 +1,13 @@
+{
+  "servers": {
+    "ark-ui": {
+      "command": "npx",
+      "args": ["-y", "@ark-ui/mcp"]
+    },
+    "figma-desktop-local": {
+      "url": "http://127.0.0.1:3845/mcp",
+      "type": "http"
+    }
+  },
+  "inputs": []
+}
