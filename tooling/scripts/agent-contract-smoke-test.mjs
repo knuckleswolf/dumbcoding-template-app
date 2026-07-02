@@ -6,6 +6,7 @@ const workspaceRoot = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
 const errors = [];
 
 const requiredPaths = [
+  'docs/brief.md',
   '.agents/skills/create-component/templates/[component-name]/[component-name].tsx.template',
   '.agents/skills/create-component/templates/[component-name]/[component-name].types.ts.template',
   '.agents/skills/create-component/templates/[component-name]/index.ts.template',
@@ -18,6 +19,8 @@ const requiredPaths = [
   '.agents/skills/create-ui-primitive/examples/badge/__tests__/badge.test.tsx',
   '.agents/skills/create-route-screen/SKILL.md',
   '.agents/skills/create-feature/SKILL.md',
+  '.agents/skills/project-intake/SKILL.md',
+  '.agents/skills/seo/SKILL.md',
   '.agents/skills/create-feature/templates/[feature-name]/[feature-name].model.ts.template',
   '.agents/skills/create-feature/templates/[feature-name]/[feature-name].types.ts.template',
   '.agents/skills/create-feature/templates/[feature-name]/[feature-name].schema.ts.template',
@@ -66,13 +69,85 @@ const forbiddenPaths = [
 ];
 
 const docFiles = [
+  'AGENTS.md',
+  'CONVENTION.md',
+  'README.md',
+  'docs/brief.md',
+  'docs/features/README.md',
+  '.agents/skills/create-api-layer/SKILL.md',
   '.agents/skills/create-component/SKILL.md',
   '.agents/skills/create-component/templates/README.md',
   '.agents/skills/create-ui-primitive/SKILL.md',
   '.agents/skills/create-ui-primitive/templates/README.md',
   '.agents/skills/create-route-screen/SKILL.md',
   '.agents/skills/create-feature/SKILL.md',
+  '.agents/skills/project-intake/SKILL.md',
+  '.agents/skills/seo/SKILL.md',
 ];
+
+const forbiddenDocMarkers = [
+  'create-adapter-factory',
+  'verify-contrast',
+  'check:contrast',
+  'Read first:** `docs/product.md`',
+  'docs/product update',
+  'guided checklist in `docs/product.md`',
+];
+
+const requiredDocMarkers = [
+  {
+    path: 'AGENTS.md',
+    markers: [
+      'project-intake` skill using `docs/brief.md`, then create `docs/product.md`',
+      'route-screen > feature capability > product component > UI primitive > Ark UI > native DOM',
+      'Use Tailwind utilities for feature/component styling',
+      'Use Zod for runtime validation schemas',
+      'Ark UI MCP is configured for this project',
+    ],
+  },
+  {
+    path: 'README.md',
+    markers: [
+      'run the `project-intake` skill using `docs/brief.md`, then create',
+      '`docs/product.md` is created during intake',
+      'features, route-screens, components, UI primitives',
+    ],
+  },
+  {
+    path: 'docs/brief.md',
+    markers: ['create `docs/product.md`', '## Required First Quiz', '## Guided Rounds'],
+  },
+  {
+    path: '.agents/skills/project-intake/SKILL.md',
+    markers: ['Read first:** `docs/brief.md`', 'Create `docs/product.md`', 'Do not reuse fixed generic labels'],
+  },
+  {
+    path: '.agents/skills/create-feature/SKILL.md',
+    markers: ['features !== screen', 'Plan top-down, then build bottom-up', 'Ark UI parts and Tailwind utility strategy'],
+  },
+  {
+    path: '.agents/skills/create-route-screen/SKILL.md',
+    markers: ['TanStack route file is the screen boundary', 'Route.useLoaderData()', 'route-screen > feature > product component > UI primitive'],
+  },
+  {
+    path: '.agents/skills/create-component/SKILL.md',
+    markers: ['Check existing project UI primitives', 'If no primitive exists', 'Style with Tailwind/shared primitives'],
+  },
+  {
+    path: '.agents/skills/create-ui-primitive/SKILL.md',
+    markers: ['Prefer Ark UI', 'Style primitives with Tailwind utilities', 'Missing local installs must not justify native/custom replacements'],
+  },
+];
+
+const lineLimitsByPath = {
+  'AGENTS.md': 180,
+  'CONVENTION.md': 260,
+  'API_CONVENTION.md': 260,
+  'AI_STYLEGUIDE.md': 180,
+  'docs/brief.md': 160,
+  'docs/product.md': 160,
+  '.agents/skills': 120,
+};
 
 const skillResourceRoots = [
   '.agents/skills/create-api-layer/templates',
@@ -87,6 +162,14 @@ const skillResourceRoots = [
 const resolvePath = (path) => join(workspaceRoot, path);
 
 const readText = (path) => readFileSync(resolvePath(path), 'utf8');
+
+const countLines = (content) => {
+  if (content.length === 0) {
+    return 0;
+  }
+
+  return content.replace(/\n$/u, '').split(/\r?\n/u).length;
+};
 
 const listFiles = (path) => {
   const absolutePath = resolvePath(path);
@@ -120,11 +203,49 @@ for (const path of forbiddenPaths) {
 
 for (const path of docFiles) {
   const content = readText(path);
+  for (const marker of forbiddenDocMarkers) {
+    if (content.includes(marker)) {
+      errors.push(`Forbidden stale marker found in ${path}: ${marker}`);
+    }
+  }
   if (content.includes('templates/create-component/[component-name]')) {
     errors.push(`Stale create-component template path in ${path}`);
   }
   if (content.includes('templates/create-ui-primitive/[component-name]')) {
     errors.push(`Stale create-ui-primitive template path in ${path}`);
+  }
+}
+
+for (const { path, markers } of requiredDocMarkers) {
+  const content = readText(path);
+  for (const marker of markers) {
+    if (!content.includes(marker)) {
+      errors.push(`Required instruction marker missing in ${path}: ${marker}`);
+    }
+  }
+}
+
+const skillDirectories = readdirSync(resolvePath('.agents/skills'));
+const skillLineLimit = lineLimitsByPath['.agents/skills'];
+for (const skillDirectory of skillDirectories) {
+  const skillPath = `.agents/skills/${skillDirectory}/SKILL.md`;
+  if (existsSync(resolvePath(skillPath))) {
+    lineLimitsByPath[skillPath] = skillLineLimit;
+  }
+}
+
+for (const [path, max] of Object.entries(lineLimitsByPath)) {
+  if (!existsSync(resolvePath(path))) {
+    continue;
+  }
+
+  if (statSync(resolvePath(path)).isDirectory()) {
+    continue;
+  }
+
+  const lineCount = countLines(readText(path));
+  if (lineCount > max) {
+    errors.push(`${path} has ${lineCount} lines, expected at most ${max}`);
   }
 }
 
@@ -136,17 +257,9 @@ for (const path of filesToScan) {
   }
 }
 
-const sharedTsconfigPath = 'packages/tsconfig/tsconfig.base.json';
-if (existsSync(resolvePath(sharedTsconfigPath))) {
-  const tsconfig = JSON.parse(readText(sharedTsconfigPath));
-  if (!Array.isArray(tsconfig.exclude) || !tsconfig.exclude.includes('.agents')) {
-    errors.push(`${sharedTsconfigPath} must exclude .agents`);
-  }
-}
-
 if (errors.length > 0) {
   console.error(errors.join('\n'));
   process.exitCode = 1;
 } else {
-  console.log('agent skills smoke test passed');
+  console.log('agent contract smoke test passed');
 }

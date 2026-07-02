@@ -36,12 +36,11 @@ Before writing custom UI/control/business logic, follow this chain:
 3. If a reusable primitive is not warranted but Ark UI covers the interaction, use Ark UI directly.
 4. Check existing shared hooks, utils, API clients, query options, models, schemas, and feature
    helpers before adding new business/product logic.
-5. Check installed libraries in `package.json` before implementing forms, server state, tables,
-   virtualization, debounced/throttled behavior, validation, or complex interactions by hand. Use
-   Zod schemas for reusable runtime validation.
-6. If a declared dependency is missing from local `node_modules`, run/request
-   `pnpm install --frozen-lockfile`. Do not choose native/custom controls solely because dependencies
-   are not installed.
+5. Check installed libraries before custom forms, server state, tables, virtualization, rate control,
+   validation, or complex interactions. Use Zod for reusable runtime validation.
+6. If declared dependencies are missing, run/request `pnpm install --frozen-lockfile`; do not choose
+   native/custom controls because dependencies are not installed.
+7. Style with Tailwind/shared primitives; do not add component selector blocks to global CSS.
 
 Installed capability defaults:
 
@@ -93,6 +92,7 @@ components/[component-name]/
 - [ ] Create `__tests__/[component-name].test.tsx` (use template)
 - [ ] Run the composition chain above; reuse project primitives, Ark UI, shared logic, and installed libraries when they fit
 - [ ] For large product components, write a decomposition map and extract logical child blocks
+- [ ] Use Tailwind utilities; document any global CSS exception
 - [ ] Add accessibility (ARIA, semantic HTML, keyboard nav)
 - [ ] If using Ark UI, consult the configured Ark UI MCP server for component anatomy and supported parts before implementation
 - [ ] Use `@testing-library/user-event` for interaction tests; reserve `fireEvent` for low-level events
@@ -109,11 +109,10 @@ components/[component-name]/
 - Do not prop-drill through 3+ levels; use context instead.
 - Do not mix domain logic with UI rendering; extract it to `.model.ts`.
 - Do not put a large product surface in one file when logical blocks can be reused or tested separately.
+- Do not build component styling through global feature CSS classes.
 - Do not use `any`; follow `AGENTS.md` required invariants.
-- Do not hand-roll accessible compound controls that Ark UI already provides unless there is a clear,
-  documented reason.
-- Do not cite missing `node_modules` as a reason to avoid declared dependencies; fix the install state
-  or ask for permission.
+- Do not hand-roll accessible compound controls Ark UI provides unless there is a documented reason.
+- Do not cite missing `node_modules` as a reason to avoid declared dependencies; fix install state or ask.
 - Do not downgrade interaction tests to `fireEvent` when `user-event` can model the user behavior.
 - Do not guess Ark UI anatomy; use the configured Ark UI MCP server when composing Ark-based components.
 

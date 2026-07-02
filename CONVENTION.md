@@ -148,6 +148,9 @@ cover the behavior:
 
 Do not reimplement primitives that the stack already provides unless the task requires a simpler
 native element or there is a documented reason.
+Use Tailwind utilities for product UI. Keep `src/styles.css` for Tailwind import, tokens, base
+elements, and app shell only; feature-specific selectors, large control blocks, and one-off visual
+systems belong in extracted UI/product components, not global CSS.
 
 If a dependency is declared in `package.json` but local `node_modules` is absent or stale, install
 dependencies first. Missing local installs must not be used as justification for bypassing Ark UI,
@@ -192,15 +195,12 @@ Do not split files just for the sake of splitting. Start with base files, then i
 
 For route-screens or screen-sized UI work, create a decomposition map before implementation. The
 route owns TanStack host logic such as `Route.useLoaderData()`, params, search, pending/error, and
-not-found boundaries. Named product components own major regions such as headers, control panels,
-visualizations, summaries, forms, lists, and action bars. Do not leave the full DOM tree in one route
-or feature file.
+not-found boundaries. The map must name product components, UI primitives, Ark UI parts, Tailwind
+styling, feature capabilities, and tests. Do not leave the full DOM tree in one route or feature file.
 
-Extract a block into a product component when it could appear in another route, panel, modal,
-onboarding step, or feature; contains repeated mapping or option rendering; has its own state, data,
-validation, side effect, or accessibility concerns; can be tested on its own; or would make the parent
-file hard to scan. A split `.model.ts`, `.hooks.ts`, or `.types.ts` does not replace DOM
-decomposition.
+Extract repeated fields, panels, cards, buttons, action bars, control groups, visualizations, lists,
+forms, and summaries into `src/ui/*` or `src/components/*` before using them in route/feature code. A
+split `.model.ts`, `.hooks.ts`, or `.types.ts` does not replace DOM decomposition.
 
 Do not respond to file-size pressure by adding `biome-ignore lint/nursery/noExcessiveLinesPerFile`.
 Allowed exceptions are mock data, generated files, large schemas, or configuration files. Application

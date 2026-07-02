@@ -23,10 +23,10 @@ implementation in parallel.
 
 ## First Project Intake
 
-Before implementation starts, run the `project-intake` skill and capture the resulting product brief
-in `docs/product.md`. The briefing should happen immediately as guided, choice-first question rounds
-in one dialogue. When the agent surface supports structured input or Plan mode, use it like a short
-3-option quiz with a recommended default before feature planning.
+Before implementation starts, run the `project-intake` skill using `docs/brief.md`, then create
+`docs/product.md` with the resulting product context. The briefing should happen immediately as guided,
+choice-first question rounds in one dialogue. When the agent surface supports structured input or
+Plan mode, use it like a short 3-option quiz with a recommended default before feature planning.
 
 Each approved feature gets its own feature thread and a short file under `docs/features/` named
 `<feature-slug>-<number>.md`, for example `user-onboarding-001.md`. Start every feature with a plan;
@@ -41,9 +41,11 @@ implement only after that plan is approved.
 - `src/ui` contains domain-agnostic UI primitives.
 - `CONVENTION.md` defines layers, naming, module boundaries, and file structure.
 - `API_CONVENTION.md` defines API domain and TanStack Query conventions.
-- `docs/product.md` is the place for product-specific decisions after a project is created.
+- `docs/brief.md` defines the reusable first-product intake process.
+- `docs/product.md` is created during intake and stores product-specific decisions.
 - `docs/features/` contains short notes for approved feature threads.
-- `.agents/skills/*` contains scaffolding contracts for new components, UI primitives, and API layers.
+- `.agents/skills/*` contains contracts for intake, features, route-screens, components, UI primitives,
+  API layers, and SEO work.
 - `SEO.md` is a situational policy for SEO, sitemap, robots, metadata, indexing, and public SSR work;
   use the `seo` skill before loading it.
 - Ark UI MCP is configured in `.codex/config.toml` and `.vscode/mcp.json`; use it as the primary
@@ -66,7 +68,7 @@ pnpm verify:all
 ```
 
 Use `pnpm verify -- <changed files...>` after code, config, build-graph, or tooling changes. Use
-`pnpm test:agents` after changing agent skills or their templates.
+`pnpm test:agents` after changing agent instructions, skill contracts, templates, or agent docs.
 
 ## Secrets And Environment
 

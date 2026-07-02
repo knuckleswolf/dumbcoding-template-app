@@ -1,6 +1,7 @@
 # Feature Planning Notes
 
-Create one file per approved feature after the project intake in `docs/product.md` is complete.
+Create one file per approved feature after the `docs/brief.md` intake is complete and `docs/product.md`
+has been created with the approved product context.
 Feature notes are intentionally short and should not replace tests, API contracts, or source code.
 
 ## Naming

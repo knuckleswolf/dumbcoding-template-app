@@ -45,12 +45,12 @@ How to use these templates:
 
 - **No domain logic:** UI primitives must be domain-agnostic.
 - **No feature-specific state:** keep primitives simple.
-- **Accessibility first:** add ARIA labels and semantic HTML when needed.
+- **Accessibility first:** add semantic HTML, labels, keyboard behavior, and visible focus.
 - **Variants and sizes:** cover expected design-system use cases.
 - **Tests:** test behavior, not implementation details.
 
 ## Reference
 
 - Detailed patterns: `CONVENTION.md` section 5
-- Accessibility: Use axe-core or manual checks
+- Accessibility: use Playwright + `@axe-core/playwright` in E2E and manual keyboard/focus checks
 - See `create-ui-primitive` SKILL.md for checklist

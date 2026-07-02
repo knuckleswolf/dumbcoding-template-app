@@ -21,7 +21,7 @@
     "check:circular": "dependency-cruiser -c tooling/dependency-cruiser.config.mjs src tooling",
     "biome:check": "biome check",
     "biome:fix": "biome check --write .",
-    "test:agents": "node tooling/scripts/agent-skills-smoke-test.mjs",
+    "test:agents": "node tooling/scripts/agent-contract-smoke-test.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "verify": "node tooling/scripts/verify-smart.mjs",
     "verify:all": "pnpm biome:check && pnpm typecheck && pnpm test:coverage && pnpm test:e2e && pnpm check:circular"

@@ -39,11 +39,13 @@ Before implementation, write a short map:
 - route component and boundary components
 - product components to create/reuse from `src/components`
 - feature capabilities to create/reuse from `src/features`
-- UI primitives or Ark UI components to use
+- UI primitives, Ark UI components, and Tailwind utility strategy to use
 - hooks/model/config/data files and test targets
 
 If a region renders repeated controls, lists, visualizations, summaries, forms, panels, action bars,
 or has its own a11y/state/data concerns, extract it from the route-screen into a product component.
+Plan top-down, then build bottom-up: route-screen > feature > product component > UI primitive >
+Ark UI > native DOM.
 
 ## Implementation Steps
 
@@ -51,11 +53,12 @@ or has its own a11y/state/data concerns, extract it from the route-screen into a
 2. Define the decomposition map and get plan approval when this is a feature thread.
 3. Keep `createFileRoute(...)`, loader/action/search validation, and `Route.use*` calls in the route.
    Use Zod for `validateSearch` and other route-level runtime validation.
-4. Use `create-component` for reusable product blocks under `src/components/*`.
-5. Use `create-ui-primitive` only for domain-agnostic primitives under `src/ui/*`.
-6. Put domain workflows, calculations, state machines, and feature hooks in `src/features/*`.
-7. Keep route JSX shallow: compose named blocks instead of rendering every control inline.
-8. Add route E2E/a11y tests when behavior is user-facing; add component/model tests near modules.
+4. Use `create-feature` for capability state, business rules, models, schemas, hooks, and API needs.
+5. Use `create-component` for reusable product blocks under `src/components/*`.
+6. Use `create-ui-primitive` for domain-agnostic primitives under `src/ui/*`.
+7. Build missing lower-layer dependencies before assembling the route-screen.
+8. Keep route JSX shallow: compose named blocks instead of rendering every control inline; use Tailwind utilities, not feature-specific global CSS.
+9. Add route E2E/a11y tests when behavior is user-facing; add component/model tests near modules.
 
 ## Pitfalls
 
@@ -64,4 +67,4 @@ or has its own a11y/state/data concerns, extract it from the route-screen into a
 - Do not build a whole app in `routes/index.tsx`.
 - Do not use `src/features/*` as a dumping ground for one large screen component.
 - Do not treat `.model.ts` or `.hooks.ts` extraction as enough if all JSX remains in one file.
-- Do not bypass Ark UI or TanStack libraries because local dependencies are missing.
+- Do not bypass Ark UI, Tailwind, or TanStack libraries because local dependencies are missing.

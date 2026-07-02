@@ -1,10 +1,11 @@
-# Product Context
+# Project Brief
 
-No product-specific context is defined in this template.
+This reusable brief guides the first product intake for projects created from this template.
+It is template context, not product-specific context.
 
-When a project is created from this repository, keep durable product decisions here: target users,
-core flows, business rules, mock credentials, demo data, state machines, localization constraints,
-and launch-specific accessibility notes.
+After intake, create `docs/product.md` and write durable product decisions there: target users, core flows,
+business rules, safe mock account policy, demo data, state machines, localization constraints, and
+launch-specific accessibility notes.
 
 ## Project Intake Briefing
 
@@ -122,7 +123,7 @@ choice, not forcing the user to write a full product brief from scratch.
 
 ## Briefing Output
 
-After the guided rounds, record:
+After the guided rounds, create `docs/product.md` with:
 
 - product summary and audience
 - visual direction and UX constraints

@@ -1,14 +1,14 @@
 ---
 name: project-intake
-description: Run the first product briefing as a guided questionnaire and turn answers into product context plus feature candidates.
+description: Run the first product briefing from docs/brief.md and create docs/product.md plus feature candidates.
 ---
 
 ## When to use
 
 Use before the first product implementation in a project created from this template. Trigger when the
-user asks to start a new app, define product scope, create the first features, or fill `docs/product.md`.
+user asks to start a new app, define product scope, create the first features, or create `docs/product.md`.
 
-**Read first:** `docs/product.md`, then `AGENTS.md` section 6.1.
+**Read first:** `docs/brief.md`, then `AGENTS.md` section 6.1. Create `docs/product.md` with decisions.
 
 ## Interview Rules
 
@@ -83,7 +83,7 @@ continue."
 
 ## Output Contract
 
-Produce a concise product brief suitable for `docs/product.md`:
+Create `docs/product.md` with a concise product brief:
 
 - summary, audience, goals, and out-of-scope items
 - visual direction and UX constraints

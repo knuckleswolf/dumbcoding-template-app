@@ -82,8 +82,9 @@ How to use these templates to scaffold a new component.
 ## Examples
 
 See `examples/` folder for real-world implementations:
+
 - `repository-card/` — Product-ready composite component with business logic, hooks, and `__tests__`
-- Compare against UI primitives in `../create-ui-primitive/examples/badge/`
+- Compare against UI primitives in `.agents/skills/create-ui-primitive/examples/badge/`
 
 ## Reference
 

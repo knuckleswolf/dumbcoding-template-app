@@ -20,6 +20,8 @@ Creating domain-agnostic UI primitive (Button, Input, Modal, Card, etc.) that is
 Before creating a primitive, inspect `package.json` and existing UI folders. Prefer Ark UI for
 accessible compound primitives and use this skill to wrap/style/adapt Ark UI parts instead of
 reimplementing their behavior.
+Style primitives with Tailwind utilities and small variant maps. Do not add primitive-specific
+selector blocks to global CSS.
 
 If Ark UI is declared in `package.json` but missing from local `node_modules`, run/request
 `pnpm install --frozen-lockfile`. Missing local installs must not justify native/custom replacements.
@@ -49,6 +51,7 @@ ui/[component-name]/
 - [ ] Replace placeholders: `{{ComponentName}}` (PascalCase), `{{component-name}}` (kebab-case)
 - [ ] Define variants and sizes in `.types.ts`
 - [ ] Run the capability check above; wrap/adapt Ark UI parts when they fit
+- [ ] Use Tailwind utilities or variants for styling; avoid global CSS selectors
 - [ ] Verify: **no domain knowledge** (reusable across all features)
 - [ ] Verify: **no feature-specific state** (simple, dumb component)
 - [ ] If using Ark UI, consult the configured Ark UI MCP server for component anatomy and supported parts before implementation
@@ -63,6 +66,7 @@ ui/[component-name]/
 
 - Do not add domain logic; use `create-component` instead.
 - Do not hardcode app-specific colors, sizes, or spacing; accept props or variants.
+- Do not create global CSS blocks for primitive internals.
 - Do not skip a11y; add ARIA labels, keyboard navigation, and semantic HTML as needed.
 - Do not reimplement accessible compound behavior already provided by Ark UI without a documented
   reason.
