@@ -1,11 +1,14 @@
 ---
 name: create-component
-description: Scaffold a component with structure, types, and tests.
+description: Scaffold a reusable product component in src/components with structure, types, and tests.
 ---
 
 ## When to use
 
-Creating a new component in `src/components/[name]/` or a feature-local component under `src/features/[feature]/`.
+Creating a reusable product component in `src/components/[name]/`.
+
+Use `create-route-screen` for route-level screens. Use feature folders for capability logic, not for
+whole screen DOM trees.
 
 **Read first:** `CONVENTION.md` section 5 for naming, structure, and allowed file roles.
 
@@ -14,7 +17,7 @@ Creating a new component in `src/components/[name]/` or a feature-local componen
 | Component type | Files | Notes |
 |---|---|---|
 | **Layout** (no logic) | `.tsx`, `.types.ts`, `index.ts` | Minimal |
-| **Feature** (with state/logic) | Add `.hooks.ts`, `.context.tsx`, `.model.ts`, `.schema.ts` as needed | Prefer `src/features/[feature]/` when feature-local |
+| **Product** (with state/logic) | Add `.hooks.ts`, `.context.tsx`, `.model.ts`, `.schema.ts` as needed | Reusable product component |
 | **UI Primitive** | Use `create-ui-primitive` skill instead | Domain-agnostic |
 
 **Full matrix:** See `CONVENTION.md` section 5, "Component/module folder structure".
@@ -34,7 +37,8 @@ Before writing custom UI/control/business logic, follow this chain:
 4. Check existing shared hooks, utils, API clients, query options, models, schemas, and feature
    helpers before adding new business/product logic.
 5. Check installed libraries in `package.json` before implementing forms, server state, tables,
-   virtualization, debounced/throttled behavior, validation, or complex interactions by hand.
+   virtualization, debounced/throttled behavior, validation, or complex interactions by hand. Use
+   Zod schemas for reusable runtime validation.
 6. If a declared dependency is missing from local `node_modules`, run/request
    `pnpm install --frozen-lockfile`. Do not choose native/custom controls solely because dependencies
    are not installed.
@@ -50,18 +54,20 @@ Installed capability defaults:
 If Ark UI fits, consult the configured Ark UI MCP server for anatomy and supported parts before
 implementation. Document the reason when choosing native/custom controls instead.
 
-## Screen Decomposition
+## Block Decomposition
 
-When a component represents a whole screen or large feature surface, split its DOM tree into named
-logical blocks when those blocks have clear ownership or likely reuse. Examples of reuse signals:
+When a component becomes a large product surface, write a decomposition map before implementation:
+parent component, extracted child product components, hooks/model/config, and tests. For route-level
+screens, stop and use `create-route-screen` instead. Reuse signals:
 
 - the block could appear in another route, panel, modal, onboarding step, or feature
 - the block has its own state, data mapping, validation, or accessibility concerns
+- the block renders repeated options, lists, controls, visualizations, summaries, or action bars
 - the block can be tested meaningfully on its own
 - the block would make the parent file hard to scan or push it toward the line limit
 
-Keep one-off glue local, but do not leave a full screen as one large `.tsx` file just because model,
-hooks, and types were split out.
+Keep one-off glue local, but a parent component should stay a coordinator. Splitting model, hooks,
+and types is not enough if the JSX still contains every block.
 
 ## Scaffold
 
@@ -80,13 +86,13 @@ components/[component-name]/
 
 ## Checklist
 
-- [ ] Create folder `src/components/[component-name]` for shared app components or use the relevant `src/features/[feature]/` subtree
+- [ ] Create folder `src/components/[component-name]`
 - [ ] Copy templates from `/[component-name]/`
 - [ ] Replace placeholders: `{{ComponentName}}`, `{{component-name}}`
 - [ ] Add optional files as needed (see matrix)
 - [ ] Create `__tests__/[component-name].test.tsx` (use template)
 - [ ] Run the composition chain above; reuse project primitives, Ark UI, shared logic, and installed libraries when they fit
-- [ ] For screen-sized components, extract reusable logical blocks into product components
+- [ ] For large product components, write a decomposition map and extract logical child blocks
 - [ ] Add accessibility (ARIA, semantic HTML, keyboard nav)
 - [ ] If using Ark UI, consult the configured Ark UI MCP server for component anatomy and supported parts before implementation
 - [ ] Use `@testing-library/user-event` for interaction tests; reserve `fireEvent` for low-level events
@@ -97,10 +103,12 @@ components/[component-name]/
 ## Pitfalls
 
 - Do not create `.misc.ts`, `.helpers.ts`, or `.temp.ts`; use a specific approved file role from the matrix.
+- Do not use this skill to create route-level screens; use `create-route-screen`.
+- Do not place reusable product components under `src/features/*`.
 - Do not export `internal/` implementation details.
 - Do not prop-drill through 3+ levels; use context instead.
 - Do not mix domain logic with UI rendering; extract it to `.model.ts`.
-- Do not put a whole screen DOM tree in one file when logical blocks are likely to be reused or tested separately.
+- Do not put a large product surface in one file when logical blocks can be reused or tested separately.
 - Do not use `any`; follow `AGENTS.md` required invariants.
 - Do not hand-roll accessible compound controls that Ark UI already provides unless there is a clear,
   documented reason.

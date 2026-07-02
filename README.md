@@ -34,8 +34,11 @@ implement only after that plan is approved.
 
 ## Project Shape
 
-- `src/routes` contains the TanStack Router host layer.
+- `src/routes` contains TanStack route-screens: route host logic plus decomposed screen composition.
 - `src/integrations` contains runtime provider wiring.
+- `src/features` contains product capabilities/workflows, not whole screen DOM trees.
+- `src/components` contains reusable product components.
+- `src/ui` contains domain-agnostic UI primitives.
 - `CONVENTION.md` defines layers, naming, module boundaries, and file structure.
 - `API_CONVENTION.md` defines API domain and TanStack Query conventions.
 - `docs/product.md` is the place for product-specific decisions after a project is created.
@@ -93,8 +96,9 @@ Before adding implementation, read `AGENTS.md`, `CONVENTION.md`, `AI_STYLEGUIDE.
 relevant local `tsconfig.json`. Read `API_CONVENTION.md` when touching API clients, query keys, or
 server-state integration.
 
-Use the matching skill from `.agents/skills/*` when creating a new reusable component, UI primitive,
-or API domain. Keep route files thin and put product-specific workflows in the appropriate layer.
+Use the matching skill from `.agents/skills/*` when creating a feature, route-screen, reusable
+component, UI primitive, or API domain. Keep route files compositional and put product-specific
+workflows in the appropriate layer.
 
 ## Dependency Maintenance
 

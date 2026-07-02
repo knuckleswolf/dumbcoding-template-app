@@ -66,15 +66,16 @@ Agent and skill docs must describe reusable architecture and workflow. If a futu
 1. Prepare the workspace: run `pnpm install --frozen-lockfile` before project intake, planning, design, or implementation. Treat prepare as a blocking gate: do not start intake, product decisions, planning, design, or implementation while install is still running or retrying. If install fails or stalls on network/sandbox access, request permission immediately instead of doing parallel product work.
 2. Define the goal, acceptance criteria, scope boundaries, and affected layers.
 3. Check existing capabilities in `package.json` before implementing primitives, state, forms, lists, routing, async data, tables, virtualization, throttling/debouncing, or accessibility behavior by hand.
-4. If a required dependency is declared in `package.json` but missing from `node_modules` or cannot be resolved, run `pnpm install --frozen-lockfile` or request permission to install. Do not downgrade architecture, hand-roll behavior, or choose native/custom controls solely because dependencies are not installed locally.
-5. Keep the diff minimal. Do not refactor adjacent code without a task-driven reason.
-6. After editing code, run `pnpm exec biome check --write <file>` when practical.
-7. Final verification:
+4. Before implementing any route-screen or screen-sized UI work, use `create-route-screen` and write a decomposition map: route host logic, product components, feature capabilities, hooks/model/config, and tests. Do not put the full screen DOM tree in one route or feature file.
+5. If a required dependency is declared in `package.json` but missing from `node_modules` or cannot be resolved, run `pnpm install --frozen-lockfile` or request permission to install. Do not downgrade architecture, hand-roll behavior, or choose native/custom controls solely because dependencies are not installed locally.
+6. Keep the diff minimal. Do not refactor adjacent code without a task-driven reason.
+7. After editing code, run `pnpm exec biome check --write <file>` when practical.
+8. Final verification:
    - code, config, build-graph, or tooling changes: run `pnpm verify -- <changed files...>`
    - agent skill changes: run `pnpm test:agents`
    - docs-only changes: full runtime verification may be skipped, but say so explicitly
    - broad dependency/config changes: run `pnpm verify:all` when the current repo shape supports all targets
-8. Report changed files, behavior, verification, and remaining risks or follow-ups.
+9. Report changed files, behavior, verification, and remaining risks or follow-ups.
 
 ## 6.1) Project Intake And Feature Threads
 
@@ -117,6 +118,7 @@ Agent and skill docs must describe reusable architecture and workflow. If a futu
 - Missing `node_modules` is an environment setup issue, not a reason to bypass installed stack decisions from `package.json`.
 - Use Ark UI for accessible interactive primitives such as select, combobox, tabs, dialog, popover, menu, tooltip, checkbox, radio group, slider, progress, pagination, accordion, and related controls. Native elements are fine only for trivial cases with no expected richer behavior.
 - Use TanStack Query for server state, TanStack Form for non-trivial forms, TanStack Table for table/grid behavior, TanStack Virtual for large lists, and TanStack Pacer for debounced/throttled interactions.
+- Use Zod for runtime validation schemas when validating route search params, form values, API payloads/responses, env-derived config, or persisted user input. Prefer `.schema.ts` files for reusable schemas.
 - Ark UI MCP is configured for this project. Use it as the primary Ark UI reference when you need component anatomy, available components, or implementation guidance.
 
 ## 10) Skills
@@ -126,7 +128,9 @@ Reuse matching skills from `.agents/skills/*` when they fit the task.
 | Skill | When | Templates | Read First |
 | --- | --- | --- | --- |
 | `create-api-layer` | New API domain or backend gateway | `.client.ts`, `.constants.ts`, `methods`, `types`, optional `hooks` | `API_CONVENTION.md` |
-| `create-component` | New app, feature, or domain-aware component | `.tsx`, `.types.ts`, `.test.tsx`, optional `.hooks.ts`, `.context.tsx`, `.model.ts`, `.schema.ts` | `CONVENTION.md` section 5 |
+| `create-feature` | New or changed product capability spanning routes, components, API, hooks, models, utils, or tests | feature core, capability map, cross-layer plan | `CONVENTION.md` sections 2, 5, 8 |
+| `create-route-screen` | New or changed route-level screen | route file, decomposition map, feature/component plan | `CONVENTION.md` sections 2, 5, 8 |
+| `create-component` | Reusable product component in `src/components/*` | `.tsx`, `.types.ts`, `.test.tsx`, optional `.hooks.ts`, `.context.tsx`, `.model.ts`, `.schema.ts` | `CONVENTION.md` section 5 |
 | `create-ui-primitive` | Domain-agnostic UI primitive | `.tsx`, `.types.ts`, `.test.tsx` | `CONVENTION.md` sections 4-5 |
 | `project-intake` | First product briefing, scope discovery, feature extraction | docs/product update, feature candidates | `docs/product.md` |
 | `seo` | SEO, sitemap, robots, metadata, indexing, `llms.txt`, or public SSR/prerendering | task-specific | `SEO.md` |

@@ -52,24 +52,24 @@ How to use these templates to scaffold a new component.
 
 - **`[component-name].schema.ts`** — Validation
   - Copy if component needs data validation
-  - Use Zod, Valibot, or similar
+  - Use Zod for runtime validation
   - Share validation between client and server
 
 ## Component type matrix
 
 | Type | `.tsx` | `.types.ts` | `.hooks.ts` | `.model.ts` | `.context.tsx` | `.schema.ts` | `.test.tsx` |
 |------|--------|-----------|-----------|-----------|---------------|-----------|-----------|
-| **UI Primitive** | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ |
 | **Layout** | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| **Feature** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ |
+| **Product block** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ |
 | **Composite** | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ |
 | **Container** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 > See `CONVENTION.md` § 5 for detailed component taxonomy.
+> Use `create-ui-primitive` for domain-agnostic primitives and `create-route-screen` for route screens.
 
 ## Quick start
 
-1. Create folder: `src/components/[component-name]/` for shared app components or the relevant `src/features/[feature]/` subtree for feature-local components
+1. Create folder: `src/components/[component-name]/`
 2. Copy templates from `/[component-name]/`
 3. Find-replace placeholders:
    - `{{ComponentName}}` → PascalCase

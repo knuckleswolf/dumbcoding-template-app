@@ -1,7 +1,7 @@
 /**
  * Data validation and transformation schemas.
  *
- * Use Zod, Valibot, or similar for runtime validation.
+ * Use Zod for runtime validation in this template.
  */
 
 // import { z } from 'zod';

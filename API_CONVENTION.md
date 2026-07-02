@@ -119,6 +119,13 @@ export const resourcesApiClient = axios.create({
 
 For Vite client code, read environment variables from `import.meta.env`. Do not use `process.env` in browser code. If the app moves to another host, adapt only the host/env boundary.
 
+## Runtime Validation
+
+Use Zod for runtime validation when API data crosses a trust boundary: request payloads, external
+responses, webhook/event payloads, persisted values, or env-derived config. Keep reusable schemas in
+domain-local schema files or near the owning method; do not put schemas in `[domain].api-client.ts`.
+Derive TypeScript types from schemas when a schema is the source of truth.
+
 ## Methods
 
 Each method lives in its own file. Do not group multiple endpoints in `methods/[module].ts`.
@@ -185,6 +192,7 @@ export { [domain]ApiClient, create[Domain]ApiClient, type [Domain]ApiClient } fr
 - [ ] Methods import the domain axios client and do not accept a client argument.
 - [ ] Query keys are hierarchical, stable, and colocated in the API domain.
 - [ ] Every reusable query/mutation hook has its own file in `hooks/`.
+- [ ] Zod schemas cover untrusted request/response payloads when runtime validation is needed.
 - [ ] Hooks use query options or methods with correct invalidation.
 - [ ] Public exports go through `index.ts` barrels.
 - [ ] No circular dependencies.

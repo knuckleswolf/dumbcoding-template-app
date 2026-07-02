@@ -1,0 +1,9 @@
+import { describe, expect, it } from 'vitest';
+
+import { get{{FeatureName}}Status } from '../{{feature-name}}.model';
+
+describe('{{FeatureName}} model', () => {
+  it('returns the default status', () => {
+    expect(get{{FeatureName}}Status()).toBe('idle');
+  });
+});

@@ -60,6 +60,7 @@ Templates: `.agents/skills/create-api-layer/templates/[domain]/`
 - [ ] Create one `hooks/use-[method-name]-query.ts` or `hooks/use-[method-name]-mutation.ts` file per reusable hook.
 - [ ] Keep transport helpers, mock adapters, error classes, and normalization local to the domain.
 - [ ] Keep `[domain].api-client.ts` focused on axios config/interceptors; move mock endpoint logic to `[domain].mock-adapter.ts`.
+- [ ] Use Zod schemas for untrusted request/response payloads when runtime validation is needed; keep schemas out of `[domain].api-client.ts`.
 - [ ] Update all `index.ts` barrels.
 - [ ] Add method tests in `methods/__tests__/`.
 - [ ] Verify no circular dependencies and no deep imports through implementation files.
@@ -75,6 +76,7 @@ Templates: `.agents/skills/create-api-layer/templates/[domain]/`
 - Do not put several query/mutation hooks into one hook file.
 - Do not pass axios clients into methods; the domain owns its client.
 - Do not import domain request/response types into `[domain].api-client.ts` just to support mock logic.
+- Do not hand-roll runtime validators when Zod fits the payload or response boundary.
 - Do not put query options in a separate global `src/lib/query` folder.
 - Do not share API-domain internals through `src/lib/api/internal`.
 - Avoid `*.client.*` filenames in TanStack Start because they are treated as client-only modules.

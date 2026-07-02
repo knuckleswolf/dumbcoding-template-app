@@ -1,0 +1,5 @@
+/**
+ * Public TypeScript contracts for the {{FeatureName}} feature.
+ */
+
+export type {{FeatureName}}Status = 'idle' | 'pending' | 'success' | 'error';

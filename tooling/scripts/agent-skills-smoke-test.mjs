@@ -16,6 +16,15 @@ const requiredPaths = [
   '.agents/skills/create-ui-primitive/templates/[component-name]/index.ts.template',
   '.agents/skills/create-ui-primitive/templates/[component-name]/__tests__/[component-name].test.tsx.template',
   '.agents/skills/create-ui-primitive/examples/badge/__tests__/badge.test.tsx',
+  '.agents/skills/create-route-screen/SKILL.md',
+  '.agents/skills/create-feature/SKILL.md',
+  '.agents/skills/create-feature/templates/[feature-name]/[feature-name].model.ts.template',
+  '.agents/skills/create-feature/templates/[feature-name]/[feature-name].types.ts.template',
+  '.agents/skills/create-feature/templates/[feature-name]/[feature-name].schema.ts.template',
+  '.agents/skills/create-feature/templates/[feature-name]/[feature-name].constants.ts.template',
+  '.agents/skills/create-feature/templates/[feature-name]/[feature-name].hooks.ts.template',
+  '.agents/skills/create-feature/templates/[feature-name]/index.ts.template',
+  '.agents/skills/create-feature/templates/[feature-name]/__tests__/[feature-name].model.test.ts.template',
   '.agents/skills/create-api-layer/templates/[domain]/[domain].api-client.ts.template',
   '.agents/skills/create-api-layer/templates/[domain]/[domain].query.ts.template',
   '.agents/skills/create-api-layer/templates/[domain]/methods/[method-name].ts.template',
@@ -61,6 +70,8 @@ const docFiles = [
   '.agents/skills/create-component/templates/README.md',
   '.agents/skills/create-ui-primitive/SKILL.md',
   '.agents/skills/create-ui-primitive/templates/README.md',
+  '.agents/skills/create-route-screen/SKILL.md',
+  '.agents/skills/create-feature/SKILL.md',
 ];
 
 const skillResourceRoots = [
@@ -70,6 +81,7 @@ const skillResourceRoots = [
   '.agents/skills/create-component/examples',
   '.agents/skills/create-ui-primitive/templates',
   '.agents/skills/create-ui-primitive/examples',
+  '.agents/skills/create-feature/templates',
 ];
 
 const resolvePath = (path) => join(workspaceRoot, path);

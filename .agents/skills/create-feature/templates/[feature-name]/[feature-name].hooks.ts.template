@@ -1,0 +1,11 @@
+/**
+ * Feature-scoped hooks for {{FeatureName}}.
+ *
+ * Keep cross-feature hooks in src/hooks and API hooks in src/lib/api/[domain]/hooks.
+ */
+
+import { get{{FeatureName}}Status } from './{{feature-name}}.model';
+
+export const use{{FeatureName}} = () => ({
+  status: get{{FeatureName}}Status(),
+});

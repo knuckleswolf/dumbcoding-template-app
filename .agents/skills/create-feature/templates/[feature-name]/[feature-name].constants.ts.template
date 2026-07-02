@@ -1,0 +1,5 @@
+/**
+ * Constants and option config for the {{FeatureName}} feature.
+ */
+
+export const {{FEATURE_NAME}}_FEATURE_KEY = '{{feature-name}}';

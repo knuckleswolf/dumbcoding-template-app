@@ -1,0 +1,5 @@
+export * from './{{feature-name}}.constants';
+export * from './{{feature-name}}.hooks';
+export * from './{{feature-name}}.model';
+export * from './{{feature-name}}.schema';
+export type * from './{{feature-name}}.types';

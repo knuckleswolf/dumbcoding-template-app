@@ -1,0 +1,7 @@
+/**
+ * Zod runtime validation schemas for the {{FeatureName}} feature.
+ */
+
+// import { z } from 'zod';
+
+// export const {{featureName}}InputSchema = z.object({});

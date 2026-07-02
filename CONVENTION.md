@@ -27,7 +27,8 @@ Current template mapping:
 
 - TanStack Start/Router routes live in `src/routes`.
 - A Next.js host would normally use `src/app` or `src/pages`.
-- Framework route files should stay thin and compose feature/lib code.
+- TanStack route files are route-screens: they own loader/action/search/params wiring and compose
+  feature/component code.
 
 ### B) Turborepo / Multi-package
 
@@ -73,8 +74,8 @@ Use pragmatic layering. Framework host code is replaceable; reusable layers shou
 
 ### App/product-aware layers
 
-- `features` - workflow or domain feature composition.
-- `components` - shared application components; may be domain-aware when intentionally app-level.
+- `features` - workflow or domain capabilities; not route-level screens.
+- `components` - reusable product components; may be domain-aware when intentionally app-level.
 - `integrations` - provider setup and third-party runtime wiring.
 - `app` or `routes` - top-level host composition, routing, loaders, server/client boundaries.
 - `data` - demo/static data only.
@@ -142,6 +143,8 @@ cover the behavior:
 - TanStack Table for table/grid behavior.
 - TanStack Virtual for large lists.
 - TanStack Pacer for debounce/throttle/rate-limit interactions.
+- Zod for runtime validation of route search params, form values, API payloads/responses, env-derived
+  config, and persisted user input.
 
 Do not reimplement primitives that the stack already provides unless the task requires a simpler
 native element or there is a documented reason.
@@ -161,7 +164,8 @@ components/<component-name>/
 └── __tests__/
 ```
 
-Feature-local components may live directly inside `features/<feature>/` when they are not intended for reuse.
+Reusable product components live in `components/`. Feature folders may own workflow hooks, state,
+models, config, and adapters, but should not hide route-level screens or reusable component trees.
 
 Base files:
 
@@ -186,10 +190,17 @@ Do not create arbitrary suffixes such as `.misc.ts`, `.stuff.ts`, `.helpers2.ts`
 
 Do not split files just for the sake of splitting. Start with base files, then introduce optional files only when they improve readability, ownership, testability, or reuse.
 
-For screen-sized components, evaluate logical blocks for reuse before leaving the full DOM tree in a
-single file. Extract a block into a product component when it could appear in another route, panel,
-modal, onboarding step, or feature; has its own state/data/accessibility concerns; can be tested on
-its own; or would make the parent file hard to scan.
+For route-screens or screen-sized UI work, create a decomposition map before implementation. The
+route owns TanStack host logic such as `Route.useLoaderData()`, params, search, pending/error, and
+not-found boundaries. Named product components own major regions such as headers, control panels,
+visualizations, summaries, forms, lists, and action bars. Do not leave the full DOM tree in one route
+or feature file.
+
+Extract a block into a product component when it could appear in another route, panel, modal,
+onboarding step, or feature; contains repeated mapping or option rendering; has its own state, data,
+validation, side effect, or accessibility concerns; can be tested on its own; or would make the parent
+file hard to scan. A split `.model.ts`, `.hooks.ts`, or `.types.ts` does not replace DOM
+decomposition.
 
 Do not respond to file-size pressure by adding `biome-ignore lint/nursery/noExcessiveLinesPerFile`.
 Allowed exceptions are mock data, generated files, large schemas, or configuration files. Application
@@ -209,18 +220,24 @@ logic should be decomposed into named modules with clear ownership.
 
 If a util grows into a portable module, migrate it to `lib/` or a dedicated package.
 
-## 8) Framework Host Boundary
+## 8) Route-Screen Host Boundary
 
-Current host-specific files are TanStack Start/Router files under `src/routes` plus router setup. If the template moves to Next.js, host-specific code should move to `src/app` or `src/pages` without forcing changes in `features`, `components`, `ui`, `lib`, `types`, or `hooks`.
+Current host-specific files are TanStack Start/Router files under `src/routes` plus router setup. In
+this host, route files are screen boundaries because they can access the current `Route` instance. If
+the template moves to Next.js, equivalent host screen files would live in `src/app` or `src/pages`
+without forcing changes in `features`, `components`, `ui`, `lib`, `types`, or `hooks`.
 
 Rules:
 
 - Keep routing loaders/actions thin.
-- Put domain workflows in `features`.
+- Keep `Route.useLoaderData()`, params/search reads, and route boundary components in the route file.
+- Use Zod schemas for `validateSearch` and other route-level runtime validation when data crosses a
+  URL, network, storage, or user-input boundary.
+- Put domain workflows and capability state in `features`; do not make a feature folder the screen.
 - Put data access in `lib/api` and server-state composition in `lib/query`.
 - Do not let lower layers import route modules, Next server components, or TanStack route objects.
-- Do not build a whole application inside `routes/index.tsx`, `app/page.tsx`, or another host index
-  file. Host files compose feature/page modules; they do not own the full product implementation.
+- Do not build a whole application inside `routes/index.tsx`, `app/page.tsx`, or another host screen
+  file. Host files compose feature capabilities and product components; they do not own the full DOM.
 
 ## 9) TypeScript Configuration
 

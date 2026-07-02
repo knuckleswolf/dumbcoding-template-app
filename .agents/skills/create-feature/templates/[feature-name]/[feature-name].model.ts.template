@@ -1,0 +1,5 @@
+/**
+ * Pure feature business logic, state transitions, calculations, and transformations.
+ */
+
+export const get{{FeatureName}}Status = (): string => 'idle';
