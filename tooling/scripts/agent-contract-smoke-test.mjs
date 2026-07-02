@@ -100,6 +100,7 @@ const requiredDocMarkers = [
     markers: [
       'project-intake` skill using `docs/brief.md`, then create `docs/product.md`',
       'route-screen > feature capability > product component > UI primitive > Ark UI > native DOM',
+      'Components and UI primitives must not import from `src/features/*`',
       'Use Tailwind utilities for feature/component styling',
       'Use Zod for runtime validation schemas',
       'Ark UI MCP is configured for this project',
@@ -123,15 +124,15 @@ const requiredDocMarkers = [
   },
   {
     path: '.agents/skills/create-feature/SKILL.md',
-    markers: ['features !== screen', 'Plan top-down, then build bottom-up', 'Ark UI parts and Tailwind utility strategy'],
+    markers: ['features !== screen', 'Components must not import `src/features/*`', 'Plan top-down, then build bottom-up'],
   },
   {
     path: '.agents/skills/create-route-screen/SKILL.md',
-    markers: ['TanStack route file is the screen boundary', 'Route.useLoaderData()', 'route-screen > feature > product component > UI primitive'],
+    markers: ['TanStack route file is the screen boundary', 'screen composition in the route', 'Do not move route-screen composition into `src/components/*`'],
   },
   {
     path: '.agents/skills/create-component/SKILL.md',
-    markers: ['Check existing project UI primitives', 'If no primitive exists', 'Style with Tailwind/shared primitives'],
+    markers: ['Components must not import `src/features/*`', 'Check existing project UI primitives', 'Style with Tailwind/shared primitives'],
   },
   {
     path: '.agents/skills/create-ui-primitive/SKILL.md',

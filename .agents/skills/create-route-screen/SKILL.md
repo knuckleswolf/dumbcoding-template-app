@@ -15,9 +15,9 @@ routes, loader/action screens, error/not-found screens, or screens that compose 
 In this template, a TanStack route file is the screen boundary because it owns `Route.useLoaderData()`,
 params, search state, pending/error/not-found boundaries, and host-specific exports.
 
-Keep that host logic in the route, but do not put the whole screen DOM tree there. A route-screen
-coordinates data and layout, then composes product components, features, UI primitives, hooks, and
-models.
+Keep that host logic and screen composition in the route, but do not inline every leaf control there.
+A route-screen coordinates data and layout, then composes product components, feature hooks/models,
+UI primitives, and shared helpers.
 
 ## Layer Contract
 
@@ -27,8 +27,8 @@ models.
 - `src/ui/*`: domain-agnostic primitives, preferably Ark UI wrappers/adapters when useful.
 - `src/lib`, `src/hooks`, `src/utils`: shared infrastructure, hooks, and helpers.
 
-`features !== screen`. A route may import feature capabilities, but a feature folder must not become
-one large route-level JSX surface.
+`features !== screen`. A route may import feature capabilities, but a feature folder or product
+component must not become one large route-level JSX surface.
 
 ## Decomposition Map
 
@@ -57,8 +57,10 @@ Ark UI > native DOM.
 5. Use `create-component` for reusable product blocks under `src/components/*`.
 6. Use `create-ui-primitive` for domain-agnostic primitives under `src/ui/*`.
 7. Build missing lower-layer dependencies before assembling the route-screen.
-8. Keep route JSX shallow: compose named blocks instead of rendering every control inline; use Tailwind utilities, not feature-specific global CSS.
-9. Add route E2E/a11y tests when behavior is user-facing; add component/model tests near modules.
+8. Keep screen composition in the route. Do not create a `*Workbench`, `*Screen`, or `*Page`
+   component whose main job is assembling route regions.
+9. Keep route JSX shallow: compose named blocks instead of rendering every control inline; use Tailwind utilities, not feature-specific global CSS.
+10. Add route E2E/a11y tests when behavior is user-facing; add component/model tests near modules.
 
 ## Pitfalls
 
@@ -66,5 +68,6 @@ Ark UI > native DOM.
 - Do not move `Route.useLoaderData()` into lower layers.
 - Do not build a whole app in `routes/index.tsx`.
 - Do not use `src/features/*` as a dumping ground for one large screen component.
+- Do not move route-screen composition into `src/components/*`.
 - Do not treat `.model.ts` or `.hooks.ts` extraction as enough if all JSX remains in one file.
 - Do not bypass Ark UI, Tailwind, or TanStack libraries because local dependencies are missing.

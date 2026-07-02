@@ -94,9 +94,8 @@ Use pragmatic layering. Framework host code is replaceable; reusable layers shou
 
 Forbidden examples:
 
-- `ui -> components`
-- `lib -> components`
-- `lib -> routes`
+- `components -> features`, `ui -> features`, `ui -> components`
+- `features -> routes`, `lib -> routes`, `lib -> components`
 - `packages/* -> apps/*`
 - cycles anywhere
 
@@ -167,8 +166,10 @@ components/<component-name>/
 └── __tests__/
 ```
 
-Reusable product components live in `components/`. Feature folders may own workflow hooks, state,
-models, config, and adapters, but should not hide route-level screens or reusable component trees.
+Reusable product components live in `components/`. They receive feature-derived data/actions via
+props and must not import `features/*`. Move shared domain contracts to `lib` or `types`.
+Feature folders may own workflow hooks, state, models, config, and adapters, but should not hide
+route-level screens or reusable component trees.
 
 Base files:
 
@@ -233,11 +234,12 @@ Rules:
 - Keep `Route.useLoaderData()`, params/search reads, and route boundary components in the route file.
 - Use Zod schemas for `validateSearch` and other route-level runtime validation when data crosses a
   URL, network, storage, or user-input boundary.
-- Put domain workflows and capability state in `features`; do not make a feature folder the screen.
+- Put domain workflows and capability state in `features`; do not make a feature folder or component
+  wrapper the screen.
 - Put data access in `lib/api` and server-state composition in `lib/query`.
 - Do not let lower layers import route modules, Next server components, or TanStack route objects.
-- Do not build a whole application inside `routes/index.tsx`, `app/page.tsx`, or another host screen
-  file. Host files compose feature capabilities and product components; they do not own the full DOM.
+- Do not inline every leaf control inside `routes/index.tsx`, `app/page.tsx`, or another host screen.
+  Host files own screen composition and compose feature capabilities plus product components.
 
 ## 9) TypeScript Configuration
 

@@ -9,6 +9,7 @@ Use this skill for a product capability, not a screen or a reusable component. A
 changes across routes, components, UI primitives, API domains, hooks, lib modules, utils, and docs.
 
 `features !== screen` and `features !== component`.
+Features are higher than components. Components must not import `src/features/*`.
 
 ## Read First
 
@@ -73,8 +74,8 @@ Copy only files that are needed. Prefer no `.tsx` in `src/features`; reusable UI
 - `*.hooks.ts`: feature-scoped hooks that bind model/state/API for consumers.
 - `index.ts`: public feature API only.
 
-Move portable infrastructure to `src/lib`, generic helpers to `src/utils`, and cross-feature hooks to
-`src/hooks`. Keep API transport in `src/lib/api`.
+Move portable infrastructure and shared domain contracts to `src/lib` or `src/types`, generic helpers
+to `src/utils`, and cross-feature hooks to `src/hooks`. Keep API transport in `src/lib/api`.
 
 ## Skill Routing
 
@@ -104,5 +105,7 @@ Move portable infrastructure to `src/lib`, generic helpers to `src/utils`, and c
 - Do not create a feature-local UI island under `src/features/*/internal` when blocks should be shared.
 - Do not use native select/range/dialog/popover/menu/etc. when Ark UI fits, unless the reason is documented.
 - Do not create reusable product components inside the feature folder.
+- Do not export feature types/constants as the dependency source for `src/components/*`; use props,
+  `src/lib`, or `src/types`.
 - Do not duplicate API clients, crypto, auth, storage, or validation helpers when shared modules fit.
 - Do not skip separate route/component/API skills when the feature crosses those layers.

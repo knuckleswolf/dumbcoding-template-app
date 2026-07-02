@@ -52,6 +52,7 @@ Agent and skill docs must describe reusable architecture and workflow. If a futu
 ## 5) Required Invariants
 
 - Respect architecture boundaries and dependency direction from `CONVENTION.md`.
+- Components and UI primitives must not import from `src/features/*`; pass feature state/actions via props or move shared contracts to `src/lib` or `src/types`.
 - Export public APIs through `index.ts` barrels when a folder is a reusable module boundary.
 - Avoid deep imports when a public `index.ts` exists, except explicit `internal/` modules.
 - Do not introduce circular dependencies. Use `pnpm check:circular` when dependency graph changes are relevant.

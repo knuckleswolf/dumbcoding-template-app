@@ -9,6 +9,7 @@ Creating a reusable product component in `src/components/[name]/`.
 
 Use `create-route-screen` for route-level screens. Use feature folders for capability logic, not for
 whole screen DOM trees.
+Components must not import `src/features/*`; receive feature-derived data/actions through props.
 
 **Read first:** `CONVENTION.md` section 5 for naming, structure, and allowed file roles.
 
@@ -104,6 +105,7 @@ components/[component-name]/
 
 - Do not create `.misc.ts`, `.helpers.ts`, or `.temp.ts`; use a specific approved file role from the matrix.
 - Do not use this skill to create route-level screens; use `create-route-screen`.
+- Do not import from `src/features/*`; use props, `src/lib`, or `src/types` for shared contracts.
 - Do not place reusable product components under `src/features/*`.
 - Do not export `internal/` implementation details.
 - Do not prop-drill through 3+ levels; use context instead.
@@ -115,5 +117,3 @@ components/[component-name]/
 - Do not cite missing `node_modules` as a reason to avoid declared dependencies; fix install state or ask.
 - Do not downgrade interaction tests to `fireEvent` when `user-event` can model the user behavior.
 - Do not guess Ark UI anatomy; use the configured Ark UI MCP server when composing Ark-based components.
-
-**Full guide:** See `CONVENTION.md` section 5 for detailed patterns and examples.
