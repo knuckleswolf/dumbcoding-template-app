@@ -1,24 +1,72 @@
 import type { ReactNode } from 'react';
-import type { {{ComponentName}}Props } from './{{component-name}}.types';
+import type {
+  {{ComponentName}}RootProps,
+  {{ComponentName}}Size,
+  {{ComponentName}}Tone,
+  {{ComponentName}}Variant,
+} from './{{component-name}}.types';
 
 /**
- * {{ComponentName}} UI primitive.
+ * {{ComponentName}} UI primitive root slot.
  *
  * @example
  * ```tsx
- * <{{ComponentName}} size="md">Content</{{ComponentName}}>
+ * <{{ComponentName}}.Root size="md" tone="neutral">Content</{{ComponentName}}.Root>
  * ```
+ *
+ * For Ark compound primitives, replace this DOM root with styled Ark slots
+ * and export every public slot instead of sealing children behind an options API.
  */
-export const {{ComponentName}} = ({
+const ROOT_BASE_CLASS = 'inline-flex items-center gap-2 rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2';
+
+const ROOT_VARIANT_CLASS = {
+  solid: 'border border-transparent shadow-sm',
+  soft: 'border border-transparent',
+  outline: 'border bg-transparent',
+  ghost: 'border border-transparent bg-transparent',
+} satisfies Record<{{ComponentName}}Variant, string>;
+
+const ROOT_SIZE_CLASS = {
+  sm: 'min-h-8 px-3 text-sm',
+  md: 'min-h-10 px-4 text-sm',
+  lg: 'min-h-12 px-5 text-base',
+} satisfies Record<{{ComponentName}}Size, string>;
+
+const ROOT_TONE_CLASS = {
+  neutral: 'border-zinc-300 bg-zinc-100 text-zinc-950 hover:bg-zinc-200 focus-visible:ring-zinc-500',
+  accent: 'border-blue-300 bg-blue-100 text-blue-950 hover:bg-blue-200 focus-visible:ring-blue-500',
+  danger: 'border-red-300 bg-red-100 text-red-950 hover:bg-red-200 focus-visible:ring-red-500',
+} satisfies Record<{{ComponentName}}Tone, string>;
+
+const cx = (...classNames: Array<string | false | null | undefined>) =>
+  classNames.filter(Boolean).join(' ');
+
+export const {{ComponentName}}Root = ({
   children,
   className,
+  size = 'md',
+  tone = 'neutral',
+  variant = 'soft',
   ...props
-}: {{ComponentName}}Props): ReactNode => {
+}: {{ComponentName}}RootProps): ReactNode => {
   return (
-    <div className={className} {...props}>
+    <div
+      className={cx(
+        ROOT_BASE_CLASS,
+        ROOT_VARIANT_CLASS[variant],
+        ROOT_SIZE_CLASS[size],
+        ROOT_TONE_CLASS[tone],
+        className,
+      )}
+      {...props}
+    >
       {children}
     </div>
   );
 };
 
-{{ComponentName}}.displayName = '{{ComponentName}}';
+{{ComponentName}}Root.displayName = '{{ComponentName}}Root';
+
+export const {{ComponentName}} = {
+  Root: {{ComponentName}}Root,
+};

@@ -1,36 +1,64 @@
 import type { ReactNode } from 'react';
-import type { BadgeProps } from './badge.types';
+import type { BadgeRootProps, BadgeSize, BadgeTone, BadgeVariant } from './badge.types';
 
 /**
- * Badge UI primitive - shows status or label.
+ * Badge UI primitive root slot.
  *
  * @example
  * ```tsx
- * <Badge variant="success">Active</Badge>
+ * <Badge.Root tone="success">Active</Badge.Root>
  * ```
  */
-export const Badge = ({
+const ROOT_BASE_CLASS = 'inline-flex items-center rounded-full font-medium';
+
+const ROOT_VARIANT_CLASS = {
+  solid: 'border border-transparent',
+  soft: 'border border-transparent',
+  outline: 'border bg-transparent',
+} satisfies Record<BadgeVariant, string>;
+
+const ROOT_TONE_CLASS = {
+  neutral: 'border-zinc-300 bg-zinc-100 text-zinc-950',
+  success: 'border-emerald-300 bg-emerald-100 text-emerald-950',
+  warning: 'border-amber-300 bg-amber-100 text-amber-950',
+  danger: 'border-red-300 bg-red-100 text-red-950',
+  info: 'border-blue-300 bg-blue-100 text-blue-950',
+} satisfies Record<BadgeTone, string>;
+
+const ROOT_SIZE_CLASS = {
+  sm: 'px-2 py-0.5 text-xs',
+  md: 'px-2.5 py-1 text-sm',
+} satisfies Record<BadgeSize, string>;
+
+const cx = (...classNames: Array<string | false | null | undefined>) =>
+  classNames.filter(Boolean).join(' ');
+
+export const BadgeRoot = ({
   children,
-  variant = 'default',
   className,
+  size = 'md',
+  tone = 'neutral',
+  variant = 'soft',
   ...props
-}: BadgeProps): ReactNode => {
-  const baseStyles = 'inline-block px-2 py-1 text-xs font-semibold rounded-full';
-  const variantStyles = {
-    default: 'bg-gray-200 text-gray-900',
-    success: 'bg-green-200 text-green-900',
-    warning: 'bg-yellow-200 text-yellow-900',
-    error: 'bg-red-200 text-red-900',
-    info: 'bg-blue-200 text-blue-900',
-  };
-
-  const classes = `${baseStyles} ${variantStyles[variant]} ${className ?? ''}`;
-
+}: BadgeRootProps): ReactNode => {
   return (
-    <span className={classes} {...props}>
+    <span
+      className={cx(
+        ROOT_BASE_CLASS,
+        ROOT_VARIANT_CLASS[variant],
+        ROOT_TONE_CLASS[tone],
+        ROOT_SIZE_CLASS[size],
+        className,
+      )}
+      {...props}
+    >
       {children}
     </span>
   );
 };
 
-Badge.displayName = 'Badge';
+BadgeRoot.displayName = 'BadgeRoot';
+
+export const Badge = {
+  Root: BadgeRoot,
+};

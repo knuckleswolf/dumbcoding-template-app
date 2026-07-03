@@ -122,6 +122,8 @@ Before product UI implementation, create a UI primitive inventory. Interactive c
 `src/ui/*` and Ark UI by default; zero UI primitives or zero Ark UI usage needs a documented reason.
 Use the Ark UI MCP before composing Ark primitives. Primitives are styled slot APIs: preserve Ark
 composition, derive wrapper props from root/part props, and expose slots instead of hardcoded DOM.
+Variants, tones, and sizes style those slots; `options` mappers are optional convenience wrappers
+only after consumers can compose the underlying slots directly.
 Use Tailwind utilities for product UI. Keep `src/styles.css` for Tailwind import, tokens, base
 elements, and app shell only; feature-specific selectors, large control blocks, and one-off visual
 systems belong in extracted UI/product components, not global CSS.

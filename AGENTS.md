@@ -20,13 +20,13 @@ Keep mandatory context small and predictable.
 
 | File | Target limit | Purpose |
 | --- | ---: | --- |
-| `AGENTS.md` | 180 lines | Agent workflow, invariants, verification, doc policy. |
+| `AGENTS.md` | 200 lines | Agent workflow, invariants, verification, doc policy. |
 | `CONVENTION.md` | 260 lines | Architecture, layers, naming, file structure. |
 | `API_CONVENTION.md` | 260 lines | API/query structure and examples. |
-| `AI_STYLEGUIDE.md` | 180 lines | Quality bar, communication, review posture. |
-| `docs/brief.md` | 160 lines | Reusable product intake guide. |
-| `docs/product.md` | 160 lines | Created during intake; current product logic only. |
-| Skill `SKILL.md` | 120 lines each | Trigger, scaffold contract, checklist, pitfalls. |
+| `AI_STYLEGUIDE.md` | 200 lines | Quality bar, communication, review posture. |
+| `docs/brief.md` | 180 lines | Reusable product intake guide. |
+| `docs/product.md` | 180 lines | Created during intake; current product logic only. |
+| Skill `SKILL.md` | 130 lines each | Trigger, scaffold contract, checklist, pitfalls. |
 
 Do not create new Markdown files by default. Add a doc only when the topic is durable, repeatedly useful, and too large for the existing file. Exceptions: create `docs/product.md` during project intake and feature notes after approval. Prefer updating an existing doc over creating a sibling.
 
@@ -123,7 +123,7 @@ Agent and skill docs must describe reusable architecture and workflow. If a futu
 - Prefer existing stack capabilities before adding a package or writing custom infrastructure.
 - Missing `node_modules` is an environment setup issue, not a reason to bypass installed stack decisions from `package.json`.
 - Use Ark UI through `src/ui/*` primitives for accessible interactive controls: select, combobox, tabs, dialog, popover, menu, tooltip, checkbox, radio group, slider, progress, pagination, accordion, and related controls. Native elements require a documented exception.
-- UI primitives are styled slot APIs, not sealed product controls: preserve Ark slot composition, derive wrapper props from Ark/root component props, and expose child/indicator/thumb/item slots instead of hardcoding DOM structure.
+- UI primitives are styled slot APIs, not sealed product controls: preserve Ark slot composition, derive wrapper props from Ark/root component props, and expose child/indicator/thumb/item slots instead of hardcoding DOM structure. Variants, tones, and sizes style slots; an `options` mapper can be only an optional convenience wrapper after the slot API exists.
 - Repeated fields, panels, cards, icon buttons, action bars, and control groups must become `src/ui/*` primitives before feature/component reuse.
 - Use TanStack Query for server state, TanStack Form for non-trivial forms, TanStack Table for table/grid behavior, TanStack Virtual for large lists, and TanStack Pacer for debounced/throttled interactions.
 - Use Zod for runtime validation schemas when validating route search params, form values, API payloads/responses, env-derived config, or persisted user input. Prefer `.schema.ts` files for reusable schemas.

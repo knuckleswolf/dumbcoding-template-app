@@ -25,8 +25,11 @@ selector blocks to global CSS.
 Prefer slot-first APIs. A primitive should look like a styled Ark/Chakra-style composition, not a
 sealed product control. Export styled Root/Trigger/Indicator/Item/Thumb/etc. slots when the Ark
 component has parts, and let consumers compose or replace icons, indicators, items, and children.
-When wrapping Ark Root/parts, derive props from the target Ark Root/part type and use `Omit` only for
-intentional adapter props. Use DOM props only for non-Ark primitives; do not recreate root props.
+An `options` mapper is allowed only as an extra convenience export after the slot API exists; it must
+not be the primary primitive API. Variants, tones, and sizes style slots; they must not decide product
+content or hide Ark parts. When wrapping Ark Root/parts, derive props from the target Ark Root/part
+type and use `Omit` only for intentional adapter props. Use DOM props only for non-Ark primitives; do
+not recreate root props.
 
 If Ark UI is declared in `package.json` but missing from local `node_modules`, run/request
 `pnpm install --frozen-lockfile`. Missing local installs must not justify native/custom replacements.
@@ -56,7 +59,9 @@ ui/[component-name]/
 - [ ] Replace placeholders: `{{ComponentName}}` (PascalCase), `{{component-name}}` (kebab-case)
 - [ ] Define variants and sizes in `.types.ts`
 - [ ] Run the capability check above; wrap/adapt Ark UI parts when they fit
+- [ ] Export a slot API first (`Root`, `Label`, `Control`, `Item`, `Indicator`, `Thumb`, etc.)
 - [ ] Preserve Ark slot composition and derive Root/part props from target Ark props
+- [ ] Add variants, tones, and sizes as styling inputs on relevant slots
 - [ ] Use Tailwind utilities or variants for styling; avoid global CSS selectors
 - [ ] Verify: **no domain knowledge** (reusable across all features)
 - [ ] Verify: **no feature-specific state** (simple, dumb component)
@@ -65,6 +70,7 @@ ui/[component-name]/
 - [ ] Use `@testing-library/user-event` for interaction tests; reserve `fireEvent` for low-level events
 - [ ] Add prop documentation/JSDoc
 - [ ] Verify: exports via `index.ts` barrel only
+- [ ] Test consumer composition, including custom children/indicator/item content when slots exist
 - [ ] Run `biome check --write <file>` after each edit
 - [ ] Run `pnpm verify` for final check
 
@@ -72,6 +78,7 @@ ui/[component-name]/
 
 - Do not add domain logic; use `create-component` instead.
 - Do not hardcode app-specific colors, sizes, or spacing; accept props or variants.
+- Do not ship an options-only wrapper such as `{ label, value, options, onChange }` as the primitive.
 - Do not hardcode closed DOM for slots such as select indicators, item indicators, slider thumbs, or
   labels when callers should be able to compose them.
 - Do not handwrite complete Root props such as slider/select props; inherit them from target Ark

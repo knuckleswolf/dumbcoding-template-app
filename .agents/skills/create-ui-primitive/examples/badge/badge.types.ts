@@ -1,21 +1,25 @@
-import type { ReactNode } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
-export type BadgeVariant = 'default' | 'success' | 'warning' | 'error' | 'info';
+export type BadgeVariant = 'solid' | 'soft' | 'outline';
+export type BadgeTone = 'neutral' | 'success' | 'warning' | 'danger' | 'info';
+export type BadgeSize = 'sm' | 'md';
 
-export interface BadgeProps {
-  /**
-   * Content to display
-   */
-  children?: ReactNode;
-
+export interface BadgeRootProps extends ComponentPropsWithoutRef<'span'> {
   /**
    * Visual variant
-   * @default 'default'
+   * @default 'soft'
    */
   variant?: BadgeVariant;
 
   /**
-   * CSS class name
+   * Color tone
+   * @default 'neutral'
    */
-  className?: string;
+  tone?: BadgeTone;
+
+  /**
+   * Size variant
+   * @default 'md'
+   */
+  size?: BadgeSize;
 }

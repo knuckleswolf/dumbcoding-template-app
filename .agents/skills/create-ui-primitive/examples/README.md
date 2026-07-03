@@ -11,23 +11,23 @@ A simple Badge UI primitive demonstrating:
   - `{{component-name}}` → `badge`
 
 - **Structure:**
-  - `badge.tsx` — Component implementation (minimal, no hooks/context)
+  - `badge.tsx` — Root slot implementation with namespace-style export
   - `badge.types.ts` — TypeScript types
   - `__tests__/badge.test.tsx` — Behavior tests
   - `index.ts` — Barrel export
 
 - **Patterns:**
-  - Pure presentation component
-  - Variant-driven styling
+  - Slot-first API: `Badge.Root`
+  - Variant, tone, and size styling
   - No internal state
-  - Simple props interface
+  - Root props derived from the target element props
 
 ## How to use
 
 1. Copy structure for your primitive
 2. Replace `badge`/`Badge` with your primitive name
-3. Keep implementation minimal (no hooks, no context)
-4. Update variants based on your design system
+3. Add Ark slots when the primitive wraps an Ark compound control
+4. Update variants, tones, and sizes based on your design system
 5. Run `biome check --write` after edits
 
 See `../../SKILL.md` for full checklist.

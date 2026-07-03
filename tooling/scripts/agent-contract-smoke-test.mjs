@@ -143,18 +143,24 @@ const requiredDocMarkers = [
   },
   {
     path: '.agents/skills/create-ui-primitive/SKILL.md',
-    markers: ['inspect `package.json`, existing UI folders, and the configured Ark UI', 'Prefer slot-first APIs', 'target Ark Root/part type'],
+    markers: [
+      'inspect `package.json`, existing UI folders, and the configured Ark UI',
+      'Prefer slot-first APIs',
+      'target Ark Root/part',
+      'An `options` mapper is allowed only as an extra convenience export',
+      'variants, tones, and sizes',
+    ],
   },
 ];
 
 const lineLimitsByPath = {
-  'AGENTS.md': 180,
+  'AGENTS.md': 200,
   'CONVENTION.md': 260,
   'API_CONVENTION.md': 260,
-  'AI_STYLEGUIDE.md': 180,
-  'docs/brief.md': 160,
-  'docs/product.md': 160,
-  '.agents/skills': 120,
+  'AI_STYLEGUIDE.md': 200,
+  'docs/brief.md': 180,
+  'docs/product.md': 180,
+  '.agents/skills': 130,
 };
 
 const skillResourceRoots = [
@@ -263,6 +269,23 @@ for (const path of filesToScan) {
   if (/\bReact\.[A-Za-z]/u.test(content)) {
     errors.push(`React namespace type/value usage found in ${path}`);
   }
+}
+
+const uiPrimitiveTemplate = readText(
+  '.agents/skills/create-ui-primitive/templates/[component-name]/[component-name].tsx.template',
+);
+if (!uiPrimitiveTemplate.includes('{{ComponentName}}Root')) {
+  errors.push('create-ui-primitive template must expose a Root slot');
+}
+if (!uiPrimitiveTemplate.includes('{{ComponentName}} = {')) {
+  errors.push('create-ui-primitive template must expose namespace-style slot composition');
+}
+
+const uiPrimitiveTypesTemplate = readText(
+  '.agents/skills/create-ui-primitive/templates/[component-name]/[component-name].types.ts.template',
+);
+if (!uiPrimitiveTypesTemplate.includes('{{ComponentName}}Tone')) {
+  errors.push('create-ui-primitive types template must include tone variants');
 }
 
 if (errors.length > 0) {

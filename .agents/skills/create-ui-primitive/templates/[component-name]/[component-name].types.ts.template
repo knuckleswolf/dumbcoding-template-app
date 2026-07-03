@@ -1,13 +1,15 @@
 import type { ComponentPropsWithoutRef } from 'react';
 
-export type {{ComponentName}}Variant = 'default' | 'primary' | 'secondary';
+export type {{ComponentName}}Variant = 'solid' | 'soft' | 'outline' | 'ghost';
 export type {{ComponentName}}Size = 'sm' | 'md' | 'lg';
+export type {{ComponentName}}Tone = 'neutral' | 'accent' | 'danger';
 
-// For Ark-based primitives, replace this DOM fallback with target Ark Root/part props.
-export interface {{ComponentName}}Props extends ComponentPropsWithoutRef<'div'> {
+// For Ark-based primitives, replace this DOM fallback with the target Ark Root props.
+// Each exported Ark slot should have its own props type derived from the matching Ark part.
+export interface {{ComponentName}}RootProps extends ComponentPropsWithoutRef<'div'> {
   /**
    * Visual variant
-   * @default 'default'
+   * @default 'soft'
    */
   variant?: {{ComponentName}}Variant;
 
@@ -16,4 +18,10 @@ export interface {{ComponentName}}Props extends ComponentPropsWithoutRef<'div'> 
    * @default 'md'
    */
   size?: {{ComponentName}}Size;
+
+  /**
+   * Color tone
+   * @default 'neutral'
+   */
+  tone?: {{ComponentName}}Tone;
 }

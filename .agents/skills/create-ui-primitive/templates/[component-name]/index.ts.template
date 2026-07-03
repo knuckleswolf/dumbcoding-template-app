@@ -1,2 +1,7 @@
-export { {{ComponentName}} } from './{{component-name}}';
-export type { {{ComponentName}}Props, {{ComponentName}}Variant, {{ComponentName}}Size } from './{{component-name}}.types';
+export { {{ComponentName}}, {{ComponentName}}Root } from './{{component-name}}';
+export type {
+  {{ComponentName}}RootProps,
+  {{ComponentName}}Size,
+  {{ComponentName}}Tone,
+  {{ComponentName}}Variant,
+} from './{{component-name}}.types';
