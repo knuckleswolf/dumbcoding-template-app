@@ -48,8 +48,8 @@ implement only after that plan is approved.
   API layers, and SEO work.
 - `SEO.md` is a situational policy for SEO, sitemap, robots, metadata, indexing, and public SSR work;
   use the `seo` skill before loading it.
-- Ark UI MCP is configured in `.codex/config.toml` and `.vscode/mcp.json`; use it as the primary
-  reference for Ark UI component anatomy and component lists.
+- Ark UI MCP is configured in `.mcp.json`, `.codex/config.toml`, and `.vscode/mcp.json`; use it as
+  the primary reference for Ark UI component anatomy and component lists.
 
 ## Scripts
 

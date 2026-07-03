@@ -5,11 +5,13 @@ description: Plan and scaffold a product capability under src/features, coordina
 
 ## Contract
 
-Use this skill for a product capability, not a screen or a reusable component. A feature may require
-changes across routes, components, UI primitives, API domains, hooks, lib modules, utils, and docs.
+Use this skill for a product capability, not route host logic or a reusable component. A feature may
+require changes across routes, components, UI primitives, API domains, hooks, lib modules, utils, and
+docs.
 
 `features !== screen` and `features !== component`.
 Features are higher than components. Components must not import `src/features/*`.
+A feature may expose a mountable entry component when the capability has cohesive UI.
 
 ## Read First
 
@@ -24,8 +26,8 @@ Before implementation, write a short map:
 - product outcome, users, scope, non-goals, acceptance criteria
 - route-screens to create/change with `create-route-screen`
 - product components to create/change with `create-component`
-- UI primitives to create/change with `create-ui-primitive`
-- Ark UI parts and Tailwind utility strategy; document any native control or global CSS exception
+- UI primitive inventory to create/change with `create-ui-primitive`
+- Ark UI MCP lookup, Ark parts, Tailwind strategy; document native/global CSS exceptions
 - API domains/endpoints to create/change with `create-api-layer`
 - feature core files under `src/features/[feature-name]`
 - shared `lib`, `hooks`, `utils`, schemas, tests, E2E/a11y checks
@@ -38,7 +40,8 @@ Ask for plan approval before implementation in feature threads.
 Plan top-down, then build bottom-up:
 
 1. Route-screen: decide which route owns screen composition and `Route.use*` host logic.
-2. Feature: define capability state, business rules, models, schemas, hooks, API needs, and risks.
+2. Feature: define entry UI if needed, capability state, business rules, models, schemas, hooks, API
+   needs, and risks.
 3. Product components: identify reusable UI blocks needed by the feature.
 4. UI primitives: identify shared fields, panels, buttons, sliders, selectors, cards, and groups.
 5. Ark UI: wrap/adapt Ark UI for accessible compound primitives when it fits.
@@ -52,6 +55,7 @@ Default feature folder:
 
 ```text
 src/features/[feature-name]/
+├── [feature-name].tsx
 ├── [feature-name].model.ts
 ├── [feature-name].types.ts
 ├── [feature-name].schema.ts
@@ -62,12 +66,13 @@ src/features/[feature-name]/
     └── [feature-name].model.test.ts
 ```
 
-Copy only files that are needed. Prefer no `.tsx` in `src/features`; reusable UI goes in
-`src/components/*`, and route-level composition stays in `src/routes/*`.
+Copy only files that are needed. Use `[feature-name].tsx` only as a mountable feature entry. Reusable
+UI goes in `src/components/*`; route host logic and multi-feature screen placement stay in routes.
 
 ## Responsibilities
 
 - `*.model.ts`: business rules, calculations, state machines, pure transformations.
+- `*.tsx`: optional feature entry that composes product components and feature state.
 - `*.types.ts`: feature contracts and exported TypeScript types.
 - `*.schema.ts`: Zod schemas for runtime validation.
 - `*.constants.ts`: feature constants and option config.
@@ -80,6 +85,7 @@ to `src/utils`, and cross-feature hooks to `src/hooks`. Keep API transport in `s
 ## Skill Routing
 
 - Route or page UI: use `create-route-screen`.
+- Cohesive capability UI mounted by a route: use this skill's feature entry.
 - Reusable product UI block: use `create-component`.
 - Domain-agnostic primitive: use `create-ui-primitive`.
 - Backend/external API domain: use `create-api-layer`.
@@ -90,7 +96,7 @@ to `src/utils`, and cross-feature hooks to `src/hooks`. Keep API transport in `s
 - [ ] Feature note exists or is planned under `docs/features/<feature-slug>-###.md`.
 - [ ] Capability map separates route, feature, component, UI primitive, Ark UI, API, lib, and tests.
 - [ ] Lower-layer dependencies are created before assembling feature core and route-screen.
-- [ ] Repeated controls, panels, cards, buttons, action bars, and fields route to `src/ui/*` or `src/components/*`.
+- [ ] Repeated controls, panels, cards, buttons, action bars, and fields route to `src/ui/*`; zero Ark UI or zero primitives has an approved exception.
 - [ ] Feature core contains no large DOM tree.
 - [ ] Styling uses Tailwind utilities; global CSS changes are limited to tokens/base/app shell.
 - [ ] Zod covers runtime validation boundaries when needed.
@@ -102,6 +108,7 @@ to `src/utils`, and cross-feature hooks to `src/hooks`. Keep API transport in `s
 ## Pitfalls
 
 - Do not put a route-screen or full JSX surface in `src/features/*`.
+- Do not force a cohesive feature entry into `src/components/*` just to keep `features` headless.
 - Do not create a feature-local UI island under `src/features/*/internal` when blocks should be shared.
 - Do not use native select/range/dialog/popover/menu/etc. when Ark UI fits, unless the reason is documented.
 - Do not create reusable product components inside the feature folder.

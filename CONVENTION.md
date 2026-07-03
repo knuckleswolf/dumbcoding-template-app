@@ -74,7 +74,7 @@ Use pragmatic layering. Framework host code is replaceable; reusable layers shou
 
 ### App/product-aware layers
 
-- `features` - workflow or domain capabilities; not route-level screens.
+- `features` - product capabilities; may expose a mountable feature entry, but not route host logic.
 - `components` - reusable product components; may be domain-aware when intentionally app-level.
 - `integrations` - provider setup and third-party runtime wiring.
 - `app` or `routes` - top-level host composition, routing, loaders, server/client boundaries.
@@ -145,8 +145,9 @@ cover the behavior:
 - Zod for runtime validation of route search params, form values, API payloads/responses, env-derived
   config, and persisted user input.
 
-Do not reimplement primitives that the stack already provides unless the task requires a simpler
-native element or there is a documented reason.
+Before product UI implementation, create a UI primitive inventory. Interactive controls route through
+`src/ui/*` and Ark UI by default; zero UI primitives or zero Ark UI usage needs a documented reason.
+Use the configured Ark UI MCP before composing Ark-based primitives or components.
 Use Tailwind utilities for product UI. Keep `src/styles.css` for Tailwind import, tokens, base
 elements, and app shell only; feature-specific selectors, large control blocks, and one-off visual
 systems belong in extracted UI/product components, not global CSS.
@@ -168,8 +169,8 @@ components/<component-name>/
 
 Reusable product components live in `components/`. They receive feature-derived data/actions via
 props and must not import `features/*`. Move shared domain contracts to `lib` or `types`.
-Feature folders may own workflow hooks, state, models, config, and adapters, but should not hide
-route-level screens or reusable component trees.
+Feature folders may own entry UI, hooks, state, models, config, and adapters, but not route host
+logic or reusable component trees.
 
 Base files:
 
@@ -234,8 +235,7 @@ Rules:
 - Keep `Route.useLoaderData()`, params/search reads, and route boundary components in the route file.
 - Use Zod schemas for `validateSearch` and other route-level runtime validation when data crosses a
   URL, network, storage, or user-input boundary.
-- Put domain workflows and capability state in `features`; do not make a feature folder or component
-  wrapper the screen.
+- Put capability state and mountable feature entries in `features`; keep route host logic in routes.
 - Put data access in `lib/api` and server-state composition in `lib/query`.
 - Do not let lower layers import route modules, Next server components, or TanStack route objects.
 - Do not inline every leaf control inside `routes/index.tsx`, `app/page.tsx`, or another host screen.

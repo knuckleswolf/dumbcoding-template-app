@@ -16,8 +16,8 @@ In this template, a TanStack route file is the screen boundary because it owns `
 params, search state, pending/error/not-found boundaries, and host-specific exports.
 
 Keep that host logic and screen composition in the route, but do not inline every leaf control there.
-A route-screen coordinates data and layout, then composes product components, feature hooks/models,
-UI primitives, and shared helpers.
+A route-screen coordinates host data and layout, then composes feature entries, product components,
+feature hooks/models, UI primitives, and shared helpers.
 
 ## Layer Contract
 
@@ -38,8 +38,8 @@ Before implementation, write a short map:
 - loader/action/search/params needs, including Zod schemas for `validateSearch` when search params exist
 - route component and boundary components
 - product components to create/reuse from `src/components`
-- feature capabilities to create/reuse from `src/features`
-- UI primitives, Ark UI components, and Tailwind utility strategy to use
+- feature entries/capabilities to create/reuse from `src/features`
+- UI primitive inventory, Ark UI MCP lookup, Ark parts, and Tailwind utility strategy to use
 - hooks/model/config/data files and test targets
 
 If a region renders repeated controls, lists, visualizations, summaries, forms, panels, action bars,
@@ -57,8 +57,9 @@ Ark UI > native DOM.
 5. Use `create-component` for reusable product blocks under `src/components/*`.
 6. Use `create-ui-primitive` for domain-agnostic primitives under `src/ui/*`.
 7. Build missing lower-layer dependencies before assembling the route-screen.
-8. Keep screen composition in the route. Do not create a `*Workbench`, `*Screen`, or `*Page`
-   component whose main job is assembling route regions.
+8. Keep multi-feature screen composition in the route. If the screen is one cohesive capability, the
+   route may mount that feature entry. Do not create `src/components/*` shells whose main job is
+   assembling route regions.
 9. Keep route JSX shallow: compose named blocks instead of rendering every control inline; use Tailwind utilities, not feature-specific global CSS.
 10. Add route E2E/a11y tests when behavior is user-facing; add component/model tests near modules.
 

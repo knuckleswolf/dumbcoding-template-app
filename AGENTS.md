@@ -70,7 +70,7 @@ Agent and skill docs must describe reusable architecture and workflow. If a futu
 1. Prepare the workspace: run `pnpm install --frozen-lockfile` before project intake, planning, design, or implementation. Treat prepare as a blocking gate: do not start intake, product decisions, planning, design, or implementation while install is still running or retrying. If install fails or stalls on network/sandbox access, request permission immediately instead of doing parallel product work.
 2. Define the goal, acceptance criteria, scope boundaries, and affected layers.
 3. Check existing capabilities in `package.json` before implementing primitives, state, forms, lists, routing, async data, tables, virtualization, throttling/debouncing, or accessibility behavior by hand.
-4. Before implementing any route-screen, screen-sized UI, or feature, plan top-down and build bottom-up: route-screen > feature capability > product component > UI primitive > Ark UI > native DOM. Write the layer/dependency map first; do not put the full screen DOM tree in one route or feature file.
+4. Before implementing any route-screen, screen-sized UI, or feature, plan top-down and build bottom-up: route-screen > feature capability/entry > product component > UI primitive > Ark UI > native DOM. Write the layer/dependency map first; do not put the full screen DOM tree in one route or feature file.
 5. If a required dependency is declared in `package.json` but missing from `node_modules` or cannot be resolved, run `pnpm install --frozen-lockfile` or request permission to install. Do not downgrade architecture, hand-roll behavior, or choose native/custom controls solely because dependencies are not installed locally.
 6. Keep the diff minimal. Do not refactor adjacent code without a task-driven reason.
 7. After editing code, run `pnpm exec biome check --write <file>` when practical.
@@ -120,11 +120,11 @@ Agent and skill docs must describe reusable architecture and workflow. If a futu
 - Audit dependency freshness every few weeks or after meaningful template changes; update intentionally in a dedicated dependency-maintenance change.
 - Prefer existing stack capabilities before adding a package or writing custom infrastructure.
 - Missing `node_modules` is an environment setup issue, not a reason to bypass installed stack decisions from `package.json`.
-- Use Ark UI for accessible interactive primitives such as select, combobox, tabs, dialog, popover, menu, tooltip, checkbox, radio group, slider, progress, pagination, accordion, and related controls. Native elements are fine only for trivial cases with no expected richer behavior.
-- Repeated fields, panels, cards, icon buttons, action bars, and control groups must become `src/ui/*` primitives or `src/components/*` product components before they are reused in feature/route code.
+- Use Ark UI through `src/ui/*` primitives for accessible interactive controls: select, combobox, tabs, dialog, popover, menu, tooltip, checkbox, radio group, slider, progress, pagination, accordion, and related controls. Native elements require a documented exception.
+- Repeated fields, panels, cards, icon buttons, action bars, and control groups must become `src/ui/*` primitives before feature/component reuse.
 - Use TanStack Query for server state, TanStack Form for non-trivial forms, TanStack Table for table/grid behavior, TanStack Virtual for large lists, and TanStack Pacer for debounced/throttled interactions.
 - Use Zod for runtime validation schemas when validating route search params, form values, API payloads/responses, env-derived config, or persisted user input. Prefer `.schema.ts` files for reusable schemas.
-- Ark UI MCP is configured for this project. Use it as the primary Ark UI reference when you need component anatomy, available components, or implementation guidance.
+- Ark UI MCP is configured for this project. Before implementing Ark-based primitives/components, use it for component lists, anatomy, parts, and implementation guidance.
 
 ## 10) Skills
 

@@ -6,6 +6,7 @@ const workspaceRoot = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
 const errors = [];
 
 const requiredPaths = [
+  '.mcp.json',
   'docs/brief.md',
   '.agents/skills/create-component/templates/[component-name]/[component-name].tsx.template',
   '.agents/skills/create-component/templates/[component-name]/[component-name].types.ts.template',
@@ -99,11 +100,12 @@ const requiredDocMarkers = [
     path: 'AGENTS.md',
     markers: [
       'project-intake` skill using `docs/brief.md`, then create `docs/product.md`',
-      'route-screen > feature capability > product component > UI primitive > Ark UI > native DOM',
+      'route-screen > feature capability/entry > product component > UI primitive > Ark UI > native DOM',
       'Components and UI primitives must not import from `src/features/*`',
       'Use Tailwind utilities for feature/component styling',
+      'Use Ark UI through `src/ui/*` primitives',
       'Use Zod for runtime validation schemas',
-      'Ark UI MCP is configured for this project',
+      'Before implementing Ark-based primitives/components',
     ],
   },
   {
@@ -112,6 +114,7 @@ const requiredDocMarkers = [
       'run the `project-intake` skill using `docs/brief.md`, then create',
       '`docs/product.md` is created during intake',
       'features, route-screens, components, UI primitives',
+      'Ark UI MCP is configured in `.mcp.json`',
     ],
   },
   {
@@ -124,11 +127,11 @@ const requiredDocMarkers = [
   },
   {
     path: '.agents/skills/create-feature/SKILL.md',
-    markers: ['features !== screen', 'Components must not import `src/features/*`', 'Plan top-down, then build bottom-up'],
+    markers: ['UI primitive inventory', 'Ark UI MCP lookup', 'zero Ark UI or zero primitives has an approved exception'],
   },
   {
     path: '.agents/skills/create-route-screen/SKILL.md',
-    markers: ['TanStack route file is the screen boundary', 'screen composition in the route', 'Do not move route-screen composition into `src/components/*`'],
+    markers: ['TanStack route file is the screen boundary', 'route may mount that feature entry', 'src/components/*` shells'],
   },
   {
     path: '.agents/skills/create-component/SKILL.md',
@@ -136,7 +139,7 @@ const requiredDocMarkers = [
   },
   {
     path: '.agents/skills/create-ui-primitive/SKILL.md',
-    markers: ['Prefer Ark UI', 'Style primitives with Tailwind utilities', 'Missing local installs must not justify native/custom replacements'],
+    markers: ['inspect `package.json`, existing UI folders, and the configured Ark UI', 'Use Ark UI by default', 'wrap/style/adapt Ark parts'],
   },
 ];
 

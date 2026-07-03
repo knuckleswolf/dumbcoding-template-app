@@ -8,7 +8,7 @@ description: Scaffold a reusable product component in src/components with struct
 Creating a reusable product component in `src/components/[name]/`.
 
 Use `create-route-screen` for route-level screens. Use feature folders for capability logic, not for
-whole screen DOM trees.
+route host logic. Use feature entry components for cohesive capability UI.
 Components must not import `src/features/*`; receive feature-derived data/actions through props.
 
 **Read first:** `CONVENTION.md` section 5 for naming, structure, and allowed file roles.
@@ -34,7 +34,7 @@ Before writing custom UI/control/business logic, follow this chain:
    a primitive covers part of the UI, use it.
 2. If no primitive exists, decide whether that UI block is likely to be reused. If yes, create or plan
    a domain-agnostic primitive with `create-ui-primitive`, then compose it here.
-3. If a reusable primitive is not warranted but Ark UI covers the interaction, use Ark UI directly.
+3. If Ark UI covers the interaction, create/reuse a `src/ui/*` primitive wrapper unless a one-off direct use is documented.
 4. Check existing shared hooks, utils, API clients, query options, models, schemas, and feature
    helpers before adding new business/product logic.
 5. Check installed libraries before custom forms, server state, tables, virtualization, rate control,
@@ -51,8 +51,7 @@ Installed capability defaults:
 - TanStack Query for server state.
 - TanStack Table/Virtual/Pacer when table, large-list, or rate-controlled interaction behavior is needed.
 
-If Ark UI fits, consult the configured Ark UI MCP server for anatomy and supported parts before
-implementation. Document the reason when choosing native/custom controls instead.
+If Ark UI fits, use the configured Ark UI MCP server for anatomy and supported parts before implementation. Document native/custom exceptions.
 
 ## Block Decomposition
 
@@ -114,6 +113,7 @@ components/[component-name]/
 - Do not build component styling through global feature CSS classes.
 - Do not use `any`; follow `AGENTS.md` required invariants.
 - Do not hand-roll accessible compound controls Ark UI provides unless there is a documented reason.
+- Do not skip `src/ui/*` for repeated fields, panels, cards, action bars, selectors, or sliders.
 - Do not cite missing `node_modules` as a reason to avoid declared dependencies; fix install state or ask.
 - Do not downgrade interaction tests to `fireEvent` when `user-event` can model the user behavior.
 - Do not guess Ark UI anatomy; use the configured Ark UI MCP server when composing Ark-based components.
