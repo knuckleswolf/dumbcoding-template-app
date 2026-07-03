@@ -22,6 +22,8 @@ const requiredPaths = [
   '.agents/skills/create-feature/SKILL.md',
   '.agents/skills/project-intake/SKILL.md',
   '.agents/skills/seo/SKILL.md',
+  '.agents/skills/sync-agent-contract/SKILL.md',
+  'tooling/scripts/sync-agent-contract.mjs',
   '.agents/skills/create-feature/templates/[feature-name]/[feature-name].model.ts.template',
   '.agents/skills/create-feature/templates/[feature-name]/[feature-name].types.ts.template',
   '.agents/skills/create-feature/templates/[feature-name]/[feature-name].schema.ts.template',
@@ -84,6 +86,7 @@ const docFiles = [
   '.agents/skills/create-feature/SKILL.md',
   '.agents/skills/project-intake/SKILL.md',
   '.agents/skills/seo/SKILL.md',
+  '.agents/skills/sync-agent-contract/SKILL.md',
 ];
 
 const forbiddenDocMarkers = [
@@ -149,6 +152,18 @@ const requiredDocMarkers = [
       'target Ark Root/part',
       'An `options` mapper is allowed only as an extra convenience export',
       'variants, tones, and sizes',
+    ],
+  },
+  {
+    path: '.agents/skills/sync-agent-contract/SKILL.md',
+    markers: [
+      'knuckleswolf/dumbcoding-template-app',
+      'pnpm sync:agent-contract',
+      '--include-package-json',
+      'pnpm install',
+      'keeps local `name`',
+      'adds or updates scripts',
+      'local `.temp`',
     ],
   },
 ];

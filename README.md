@@ -66,10 +66,16 @@ pnpm lint
 pnpm format
 pnpm verify -- <changed files...>
 pnpm verify:all
+pnpm sync:agent-contract
 ```
 
 Use `pnpm verify -- <changed files...>` after code, config, build-graph, or tooling changes. Use
 `pnpm test:agents` after changing agent instructions, skill contracts, templates, or agent docs.
+Use `pnpm sync:agent-contract` as a dry-run before pulling upstream agent instructions/settings from
+`knuckleswolf/dumbcoding-template-app`; apply with `--apply` after reviewing the allowlisted diff.
+`README.md` is not synced. `package.json` is opt-in because it owns the runtime dependency contract;
+when included, it keeps local `name`, updates scripts and dependency versions, and then
+requires `pnpm install` to reconcile `pnpm-lock.yaml`.
 
 ## Secrets And Environment
 

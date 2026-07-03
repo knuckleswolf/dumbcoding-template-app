@@ -142,3 +142,4 @@ Reuse matching skills from `.agents/skills/*` when they fit the task.
 | `create-ui-primitive` | Domain-agnostic UI primitive | `.tsx`, `.types.ts`, `.test.tsx` | `CONVENTION.md` sections 4-5 |
 | `project-intake` | First product briefing, scope discovery, feature extraction | create docs/product, feature candidates | `docs/brief.md` |
 | `seo` | SEO, sitemap, robots, metadata, indexing, `llms.txt`, or public SSR/prerendering | task-specific | `SEO.md` |
+| `sync-agent-contract` | Pull template agent instructions/settings from upstream | allowlisted sync script | current diff |

@@ -21,6 +21,7 @@
     "check:circular": "dependency-cruiser -c tooling/dependency-cruiser.config.mjs src tooling",
     "biome:check": "biome check",
     "biome:fix": "biome check --write .",
+    "sync:agent-contract": "node tooling/scripts/sync-agent-contract.mjs",
     "test:agents": "node tooling/scripts/agent-contract-smoke-test.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "verify": "node tooling/scripts/verify-smart.mjs",
