@@ -54,6 +54,7 @@ Agent and skill docs must describe reusable architecture and workflow. If a futu
 - Respect architecture boundaries and dependency direction from `CONVENTION.md`.
 - Components and UI primitives must not import from `src/features/*`; pass feature state/actions via props or move stable shared contracts to `src/lib` or `src/types`.
 - `src/lib` and `src/utils` contain no UI; `utils` are environment-agnostic helpers, while `lib` may depend on project/runtime context.
+- `src/layouts` contains screen skeletons; layouts accept `children` only for target content and must not receive structural slots as props.
 - Export public APIs through `index.ts` barrels when a folder is a reusable module boundary.
 - Avoid deep imports when a public `index.ts` exists, except explicit `internal/` modules.
 - Do not introduce circular dependencies. Use `pnpm check:circular` when dependency graph changes are relevant.
@@ -71,7 +72,7 @@ Agent and skill docs must describe reusable architecture and workflow. If a futu
 1. Prepare the workspace: run `pnpm install --frozen-lockfile` before project intake, planning, design, or implementation. Treat prepare as a blocking gate: do not start intake, product decisions, planning, design, or implementation while install is still running or retrying. If install fails or stalls on network/sandbox access, request permission immediately instead of doing parallel product work.
 2. Define the goal, acceptance criteria, scope boundaries, and affected layers.
 3. Check existing capabilities in `package.json` before implementing primitives, state, forms, lists, routing, async data, tables, virtualization, throttling/debouncing, or accessibility behavior by hand.
-4. Before implementing any route-screen, screen-sized UI, or feature, plan top-down and build bottom-up: route-screen > feature capability/entry > product component > UI primitive > Ark UI > native DOM. Write the layer/dependency map first; do not put the full screen DOM tree in one route or feature file.
+4. Before implementing any route-screen, screen-sized UI, or feature, plan top-down and build bottom-up: route-screen > layout shell > feature capability/entry > product component > UI primitive > Ark UI > native DOM. Write the layer/dependency map first; do not put the full screen DOM tree in one route or feature file.
 5. If a required dependency is declared in `package.json` but missing from `node_modules` or cannot be resolved, run `pnpm install --frozen-lockfile` or request permission to install. Do not downgrade architecture, hand-roll behavior, or choose native/custom controls solely because dependencies are not installed locally.
 6. Keep the diff minimal. Do not refactor adjacent code without a task-driven reason.
 7. After editing code, run `pnpm exec biome check --write <file>` when practical.
@@ -136,7 +137,7 @@ Reuse matching skills from `.agents/skills/*` when they fit the task.
 | --- | --- | --- | --- |
 | `create-api-layer` | New API domain or backend gateway | `.client.ts`, `.constants.ts`, `methods`, `types`, optional `hooks` | `API_CONVENTION.md` |
 | `create-feature` | New or changed product capability spanning routes, components, API, hooks, models, utils, or tests | feature core, capability map, cross-layer plan | `CONVENTION.md` sections 2, 5, 8 |
-| `create-route-screen` | New or changed route-level screen | route file, decomposition map, feature/component plan | `CONVENTION.md` sections 2, 5, 8 |
+| `create-route-screen` | New or changed route-level screen | route file, layout shell, decomposition map, feature/component plan | `CONVENTION.md` sections 2, 5, 8 |
 | `create-component` | Reusable product component in `src/components/*` | `.tsx`, `.types.ts`, `.test.tsx`, optional `.hooks.ts`, `.context.tsx`, `.model.ts`, `.schema.ts` | `CONVENTION.md` section 5 |
 | `create-ui-primitive` | Domain-agnostic UI primitive | `.tsx`, `.types.ts`, `.test.tsx` | `CONVENTION.md` sections 4-5 |
 | `project-intake` | First product briefing, scope discovery, feature extraction | create docs/product, feature candidates | `docs/brief.md` |

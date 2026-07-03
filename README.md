@@ -35,6 +35,7 @@ implement only after that plan is approved.
 ## Project Shape
 
 - `src/routes` contains TanStack route-screens: route host logic plus decomposed screen composition.
+- `src/layouts` contains named screen skeletons that accept `children` for target content.
 - `src/integrations` contains runtime provider wiring.
 - `src/features` contains product capabilities/workflows, not whole screen DOM trees.
 - `src/components` contains reusable product components.
@@ -44,7 +45,7 @@ implement only after that plan is approved.
 - `docs/brief.md` defines the reusable first-product intake process.
 - `docs/product.md` is created during intake and stores product-specific decisions.
 - `docs/features/` contains short notes for approved feature threads.
-- `.agents/skills/*` contains contracts for intake, features, route-screens, components, UI primitives,
+- `.agents/skills/*` contains contracts for intake, features, route-screens, layouts, components, UI primitives,
   API layers, and SEO work.
 - `SEO.md` is a situational policy for SEO, sitemap, robots, metadata, indexing, and public SSR work;
   use the `seo` skill before loading it.

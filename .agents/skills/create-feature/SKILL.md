@@ -24,7 +24,7 @@ A feature may expose a mountable entry component when the capability has cohesiv
 Before implementation, write a short map:
 
 - product outcome, users, scope, non-goals, acceptance criteria
-- route-screens to create/change with `create-route-screen`
+- route-screens and layouts to create/change with `create-route-screen`
 - product components to create/change with `create-component`
 - UI primitive inventory to create/change with `create-ui-primitive`
 - Ark UI MCP lookup, Ark parts, Tailwind strategy; document native/global CSS exceptions
@@ -39,7 +39,7 @@ Ask for plan approval before implementation in feature threads.
 
 Plan top-down, then build bottom-up:
 
-1. Route-screen: decide which route owns screen composition and `Route.use*` host logic.
+1. Route-screen/layout: decide which route owns host logic and which layout owns shell structure.
 2. Feature: define entry UI if needed, capability state, business rules, models, schemas, hooks, API
    needs, and risks.
 3. Product components: identify reusable UI blocks needed by the feature.
@@ -68,7 +68,7 @@ src/features/[feature-name]/
 
 Copy only files that are needed. Use `[feature-name].tsx` as the capability entry that owns feature
 state orchestration; it must not be a thin pass-through to one product/workbench component. Reusable
-UI goes in `src/components/*`; route host logic and multi-feature screen placement stay in routes.
+product UI goes in `src/components/*`; primitives go in `src/ui/*`; shell placement stays in routes/layouts.
 
 ## Responsibilities
 
@@ -81,7 +81,7 @@ UI goes in `src/components/*`; route host logic and multi-feature screen placeme
 - `index.ts`: public feature API only.
 
 Move project/runtime functional code, serialization, storage, API helpers, and stable algorithms to
-`src/lib`; keep copy, options, state, view-models, workflows, and all UI in features/components.
+`src/lib`; keep product copy, options, state, view-models, workflows, and UI out of `lib`.
 
 ## Skill Routing
 
@@ -108,7 +108,7 @@ Move project/runtime functional code, serialization, storage, API helpers, and s
 
 ## Pitfalls
 
-- Do not put a route-screen or full JSX surface in `src/features/*`.
+- Do not put a route-screen, layout shell, or full JSX surface in `src/features/*`.
 - Do not force a cohesive feature entry into `src/components/*` just to keep `features` headless.
 - Do not create a feature entry that only calls hooks and forwards everything into one component.
 - Do not create a feature-local UI island under `src/features/*/internal` when blocks should be shared.

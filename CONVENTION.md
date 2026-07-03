@@ -9,6 +9,7 @@ This convention describes organization rules that can be used across React app h
 ```text
 ├── src/
 │   ├── app/ or routes/          # framework host layer
+│   ├── layouts/
 │   ├── features/
 │   ├── components/
 │   ├── hooks/
@@ -32,33 +33,9 @@ Current template mapping:
 
 ### B) Turborepo / Multi-package
 
-```text
-├── apps/
-│   ├── web/
-│   │   ├── src/
-│   │   │   ├── app/ or routes/
-│   │   │   ├── features/
-│   │   │   └── integrations/
-│   │   └── public/
-│   └── docs/
-├── packages/
-│   ├── ui/
-│   ├── lib/
-│   ├── hooks/
-│   ├── types/
-│   ├── utils/
-│   └── tsconfig/
-├── tooling/
-├── turbo.json
-├── package.json
-└── Dockerfile
-```
-
-Notes:
-
-- In `apps/` live app-specific routes, providers, feature wiring, and runtime integrations.
-- In `packages/` live reusable code with minimal knowledge about a specific app.
-- Do not import from `apps/*` into `packages/*`.
+In `apps/` live app-specific routes, layouts, providers, feature wiring, and integrations. In
+`packages/` live reusable `ui`, `lib`, `hooks`, `types`, `utils`, and shared configs. Do not import
+from `apps/*` into `packages/*`.
 
 ## 2) Layers and Boundaries
 
@@ -76,6 +53,7 @@ Use pragmatic layering. Framework host code is replaceable; reusable layers shou
 
 - `features` - product capabilities; may expose a mountable feature entry, but not route host logic.
 - `components` - reusable product components; may be domain-aware when intentionally app-level.
+- `layouts` - screen skeletons and app/page frames; only accept `children` for target content.
 - `integrations` - provider setup and third-party runtime wiring.
 - `app` or `routes` - top-level host composition, routing, loaders, server/client boundaries.
 - `data` - demo/static data only.
@@ -89,13 +67,15 @@ Use pragmatic layering. Framework host code is replaceable; reusable layers shou
 - `utils` -> `utils`, `types`
 - `components` -> `ui`, `hooks`, `utils`, `lib`, `types`
 - `features` -> `components`, `ui`, `hooks`, `utils`, `lib`, `types`
+- `layouts` -> `components`, `ui`, `hooks`, `utils`, `lib`, `types`
 - `integrations` -> framework/runtime providers plus `lib`, `types`
 - `app` or `routes` -> can import everything, but lower layers must not import them
 
 Forbidden examples:
 
 - `components -> features`, `ui -> features`, `ui -> components`
-- `features -> routes`, `lib -> ui`, `lib -> components`, `ui -> lib`, `utils -> lib`
+- `features -> routes`, `features -> layouts`, `layouts -> features`
+- `lib -> ui`, `lib -> components`, `ui -> lib`, `utils -> lib`
 - `packages/* -> apps/*`
 - cycles anywhere
 
@@ -108,14 +88,7 @@ Forbidden examples:
 - Keep `index.ts` files boring. They should re-export public APIs only, not contain product screens,
   workflows, business logic, schemas, data fetching, or large UI trees.
 
-Example root index:
-
-- `export * from './components'`
-- `export * from './ui'`
-- `export * from './utils'`
-- `export * from './lib'`
-- `export * from './hooks'`
-- `export type * from './types'`
+Root barrels may re-export `components`, `layouts`, `ui`, `utils`, `lib`, `hooks`, and public types.
 
 ## 4) Naming
 
@@ -173,6 +146,10 @@ props and must not import `features/*`. Move shared domain contracts to `lib` or
 Feature folders may own entry UI, hooks, state, models, config, and adapters. A feature entry
 orchestrates capability state and product blocks; it is not a thin proxy to one workbench component.
 
+Layouts live in `layouts/` and own repeated screen skeletons: header/sidebar/footer/content frame.
+They accept only `children` for target content, not `header`, `footer`, `nav`, `content`, or `actions`
+props. Create several named layouts instead of one universal layout with many structural options.
+
 Base files:
 
 - `<component-name>.tsx` - implementation and public component entry.
@@ -196,10 +173,9 @@ Do not create arbitrary suffixes such as `.misc.ts`, `.stuff.ts`, `.helpers2.ts`
 
 Do not split files just for the sake of splitting. Start with base files, then introduce optional files only when they improve readability, ownership, testability, or reuse.
 
-For route-screens or screen-sized UI work, create a decomposition map before implementation. The
-route owns TanStack host logic such as `Route.useLoaderData()`, params, search, pending/error, and
-not-found boundaries. The map must name product components, UI primitives, Ark UI parts, Tailwind
-styling, feature capabilities, and tests. Do not leave the full DOM tree in one route or feature file.
+For route-screens or screen-sized UI work, create a decomposition map first. The route owns TanStack
+host logic and screen composition; layouts own repeated shell structure; features own capability
+state. The map must name layouts, product components, UI primitives, Ark parts, styling, and tests.
 
 Extract repeated fields, panels, cards, buttons, action bars, control groups, visualizations, lists,
 forms, and summaries into `src/ui/*` or `src/components/*` before using them in route/feature code. A
@@ -218,7 +194,7 @@ logic should be decomposed into named modules with clear ownership.
 
 ## 7) Utils Vs Lib
 
-- `utils/`: small helpers with limited scope; may be app or feature specific.
+- `utils/`: environment-agnostic pure helpers; no app, feature, runtime, or UI dependency.
 - `lib/`: project/environment functional modules, clients, adapters, wrappers, storage, serialization, query factories, and infrastructure; no UI.
 
 If a helper can be copied out and still work, keep it in `utils`; move it to `lib` only when it depends on project/runtime context. Keep copy, default state, view-models, options, and workflows in `features` or `components`.

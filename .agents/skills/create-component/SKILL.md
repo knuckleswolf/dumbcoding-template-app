@@ -57,7 +57,7 @@ If Ark UI fits, use the configured Ark UI MCP server for anatomy and supported p
 
 When a component becomes a large product surface, write a decomposition map before implementation:
 parent component, extracted child product components, hooks/model/config, and tests. For route-level
-screens, stop and use `create-route-screen` instead. Reuse signals:
+screens or shell structure, stop and use `create-route-screen`/`src/layouts` instead. Reuse signals:
 
 - the block could appear in another route, panel, modal, onboarding step, or feature
 - the block has its own state, data mapping, validation, or accessibility concerns
@@ -103,7 +103,7 @@ components/[component-name]/
 ## Pitfalls
 
 - Do not create `.misc.ts`, `.helpers.ts`, or `.temp.ts`; use a specific approved file role from the matrix.
-- Do not use this skill to create route-level screens; use `create-route-screen`.
+- Do not use this skill to create route-level screens or layout shells; use `create-route-screen` and `src/layouts`.
 - Do not import from `src/features/*`; use props, `src/lib`, or `src/types` for shared contracts.
 - Do not place reusable product components under `src/features/*`.
 - Do not export `internal/` implementation details.

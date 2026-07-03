@@ -100,9 +100,10 @@ const requiredDocMarkers = [
     path: 'AGENTS.md',
     markers: [
       'project-intake` skill using `docs/brief.md`, then create `docs/product.md`',
-      'route-screen > feature capability/entry > product component > UI primitive > Ark UI > native DOM',
+      'route-screen > layout shell > feature capability/entry > product component > UI primitive > Ark UI > native DOM',
       'Components and UI primitives must not import from `src/features/*`',
       '`src/lib` and `src/utils` contain no UI',
+      '`src/layouts` contains screen skeletons',
       'Use Tailwind utilities for feature/component styling',
       'Use Ark UI through `src/ui/*` primitives',
       'UI primitives are styled slot APIs',
@@ -116,7 +117,7 @@ const requiredDocMarkers = [
     markers: [
       'run the `project-intake` skill using `docs/brief.md`, then create',
       '`docs/product.md` is created during intake',
-      'features, route-screens, components, UI primitives',
+      'features, route-screens, layouts, components, UI primitives',
       'Ark UI MCP is configured in `.mcp.json`',
     ],
   },
@@ -130,15 +131,15 @@ const requiredDocMarkers = [
   },
   {
     path: '.agents/skills/create-feature/SKILL.md',
-    markers: ['thin pass-through', 'all UI in features/components', 'zero Ark UI or zero primitives has an approved exception'],
+    markers: ['thin pass-through', 'UI out of `lib`', 'zero Ark UI or zero primitives has an approved exception'],
   },
   {
     path: '.agents/skills/create-route-screen/SKILL.md',
-    markers: ['TanStack route file is the screen boundary', 'route may mount that feature entry', 'workbench/shell components'],
+    markers: ['layout shell to create/reuse from `src/layouts`', 'Layout props are `children` only', 'workbench/shell components'],
   },
   {
     path: '.agents/skills/create-component/SKILL.md',
-    markers: ['Components must not import `src/features/*`', 'slot-first `src/ui/*` primitive wrapper', 'Style with Tailwind/shared primitives'],
+    markers: ['Components must not import `src/features/*`', 'route-level screens or layout shells', 'slot-first `src/ui/*` primitive wrapper'],
   },
   {
     path: '.agents/skills/create-ui-primitive/SKILL.md',
