@@ -1,14 +1,10 @@
-import type { ReactNode } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
 export type {{ComponentName}}Variant = 'default' | 'primary' | 'secondary';
 export type {{ComponentName}}Size = 'sm' | 'md' | 'lg';
 
-export interface {{ComponentName}}Props {
-  /**
-   * Child content
-   */
-  children?: ReactNode;
-
+// For Ark-based primitives, replace this DOM fallback with target Ark Root/part props.
+export interface {{ComponentName}}Props extends ComponentPropsWithoutRef<'div'> {
   /**
    * Visual variant
    * @default 'default'
@@ -20,9 +16,4 @@ export interface {{ComponentName}}Props {
    * @default 'md'
    */
   size?: {{ComponentName}}Size;
-
-  /**
-   * CSS class name
-   */
-  className?: string;
 }

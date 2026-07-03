@@ -52,7 +52,8 @@ Agent and skill docs must describe reusable architecture and workflow. If a futu
 ## 5) Required Invariants
 
 - Respect architecture boundaries and dependency direction from `CONVENTION.md`.
-- Components and UI primitives must not import from `src/features/*`; pass feature state/actions via props or move shared contracts to `src/lib` or `src/types`.
+- Components and UI primitives must not import from `src/features/*`; pass feature state/actions via props or move stable shared contracts to `src/lib` or `src/types`.
+- `src/lib` and `src/utils` contain no UI; `utils` are environment-agnostic helpers, while `lib` may depend on project/runtime context.
 - Export public APIs through `index.ts` barrels when a folder is a reusable module boundary.
 - Avoid deep imports when a public `index.ts` exists, except explicit `internal/` modules.
 - Do not introduce circular dependencies. Use `pnpm check:circular` when dependency graph changes are relevant.
@@ -121,6 +122,7 @@ Agent and skill docs must describe reusable architecture and workflow. If a futu
 - Prefer existing stack capabilities before adding a package or writing custom infrastructure.
 - Missing `node_modules` is an environment setup issue, not a reason to bypass installed stack decisions from `package.json`.
 - Use Ark UI through `src/ui/*` primitives for accessible interactive controls: select, combobox, tabs, dialog, popover, menu, tooltip, checkbox, radio group, slider, progress, pagination, accordion, and related controls. Native elements require a documented exception.
+- UI primitives are styled slot APIs, not sealed product controls: preserve Ark slot composition, derive wrapper props from Ark/root component props, and expose child/indicator/thumb/item slots instead of hardcoding DOM structure.
 - Repeated fields, panels, cards, icon buttons, action bars, and control groups must become `src/ui/*` primitives before feature/component reuse.
 - Use TanStack Query for server state, TanStack Form for non-trivial forms, TanStack Table for table/grid behavior, TanStack Virtual for large lists, and TanStack Pacer for debounced/throttled interactions.
 - Use Zod for runtime validation schemas when validating route search params, form values, API payloads/responses, env-derived config, or persisted user input. Prefer `.schema.ts` files for reusable schemas.

@@ -67,10 +67,10 @@ Use pragmatic layering. Framework host code is replaceable; reusable layers shou
 ### Agnostic layers
 
 - `ui` - UI primitives, no business/domain logic.
-- `lib` - self-contained modules, infrastructure abstractions, clients, wrappers.
+- `lib` - project/environment functional modules, clients, wrappers, storage, serialization; no UI.
 - `types` - shared contracts and model types; no runtime code.
 - `hooks` - reusable cross-component hooks.
-- `utils` - small generic helpers when they are not domain-specific.
+- `utils` - environment-agnostic pure helpers that can be copied out and still work; no UI.
 
 ### App/product-aware layers
 
@@ -83,10 +83,10 @@ Use pragmatic layering. Framework host code is replaceable; reusable layers shou
 ### Allowed dependency direction
 
 - `types` -> none
-- `ui` -> `ui`, `types`, `lib`
-- `lib` -> `lib`, `types`
+- `ui` -> `ui`, `types`, `utils`
+- `lib` -> `lib`, `types`, `utils`
 - `hooks` -> `lib`, `types`, optionally `ui`
-- `utils` -> `types`, `lib`
+- `utils` -> `utils`, `types`
 - `components` -> `ui`, `hooks`, `utils`, `lib`, `types`
 - `features` -> `components`, `ui`, `hooks`, `utils`, `lib`, `types`
 - `integrations` -> framework/runtime providers plus `lib`, `types`
@@ -95,7 +95,7 @@ Use pragmatic layering. Framework host code is replaceable; reusable layers shou
 Forbidden examples:
 
 - `components -> features`, `ui -> features`, `ui -> components`
-- `features -> routes`, `lib -> routes`, `lib -> components`
+- `features -> routes`, `lib -> ui`, `lib -> components`, `ui -> lib`, `utils -> lib`
 - `packages/* -> apps/*`
 - cycles anywhere
 
@@ -147,7 +147,8 @@ cover the behavior:
 
 Before product UI implementation, create a UI primitive inventory. Interactive controls route through
 `src/ui/*` and Ark UI by default; zero UI primitives or zero Ark UI usage needs a documented reason.
-Use the configured Ark UI MCP before composing Ark-based primitives or components.
+Use the Ark UI MCP before composing Ark primitives. Primitives are styled slot APIs: preserve Ark
+composition, derive wrapper props from root/part props, and expose slots instead of hardcoded DOM.
 Use Tailwind utilities for product UI. Keep `src/styles.css` for Tailwind import, tokens, base
 elements, and app shell only; feature-specific selectors, large control blocks, and one-off visual
 systems belong in extracted UI/product components, not global CSS.
@@ -169,8 +170,8 @@ components/<component-name>/
 
 Reusable product components live in `components/`. They receive feature-derived data/actions via
 props and must not import `features/*`. Move shared domain contracts to `lib` or `types`.
-Feature folders may own entry UI, hooks, state, models, config, and adapters, but not route host
-logic or reusable component trees.
+Feature folders may own entry UI, hooks, state, models, config, and adapters. A feature entry
+orchestrates capability state and product blocks; it is not a thin proxy to one workbench component.
 
 Base files:
 
@@ -218,9 +219,9 @@ logic should be decomposed into named modules with clear ownership.
 ## 7) Utils Vs Lib
 
 - `utils/`: small helpers with limited scope; may be app or feature specific.
-- `lib/`: portable modules, clients, adapters, wrappers, query factories, and infrastructure abstractions.
+- `lib/`: project/environment functional modules, clients, adapters, wrappers, storage, serialization, query factories, and infrastructure; no UI.
 
-If a util grows into a portable module, migrate it to `lib/` or a dedicated package.
+If a helper can be copied out and still work, keep it in `utils`; move it to `lib` only when it depends on project/runtime context. Keep copy, default state, view-models, options, and workflows in `features` or `components`.
 
 ## 8) Route-Screen Host Boundary
 

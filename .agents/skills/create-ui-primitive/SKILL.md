@@ -22,6 +22,12 @@ MCP. Use Ark UI by default for accessible compound primitives and wrap/style/ada
 Style primitives with Tailwind utilities and small variant maps. Do not add primitive-specific
 selector blocks to global CSS.
 
+Prefer slot-first APIs. A primitive should look like a styled Ark/Chakra-style composition, not a
+sealed product control. Export styled Root/Trigger/Indicator/Item/Thumb/etc. slots when the Ark
+component has parts, and let consumers compose or replace icons, indicators, items, and children.
+When wrapping Ark Root/parts, derive props from the target Ark Root/part type and use `Omit` only for
+intentional adapter props. Use DOM props only for non-Ark primitives; do not recreate root props.
+
 If Ark UI is declared in `package.json` but missing from local `node_modules`, run/request
 `pnpm install --frozen-lockfile`. Missing local installs must not justify native/custom replacements.
 
@@ -50,6 +56,7 @@ ui/[component-name]/
 - [ ] Replace placeholders: `{{ComponentName}}` (PascalCase), `{{component-name}}` (kebab-case)
 - [ ] Define variants and sizes in `.types.ts`
 - [ ] Run the capability check above; wrap/adapt Ark UI parts when they fit
+- [ ] Preserve Ark slot composition and derive Root/part props from target Ark props
 - [ ] Use Tailwind utilities or variants for styling; avoid global CSS selectors
 - [ ] Verify: **no domain knowledge** (reusable across all features)
 - [ ] Verify: **no feature-specific state** (simple, dumb component)
@@ -65,6 +72,10 @@ ui/[component-name]/
 
 - Do not add domain logic; use `create-component` instead.
 - Do not hardcode app-specific colors, sizes, or spacing; accept props or variants.
+- Do not hardcode closed DOM for slots such as select indicators, item indicators, slider thumbs, or
+  labels when callers should be able to compose them.
+- Do not handwrite complete Root props such as slider/select props; inherit them from target Ark
+  types and adapt only intentional API differences.
 - Do not leave repeated product controls in `src/components/*` when a `src/ui/*` primitive is needed.
 - Do not create global CSS blocks for primitive internals.
 - Do not skip a11y; add ARIA labels, keyboard navigation, and semantic HTML as needed.

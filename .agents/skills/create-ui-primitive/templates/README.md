@@ -20,7 +20,7 @@ How to use these templates:
   - Replace `{{component-name}}` with kebab-case name
 
 - **`[component-name].types.ts`**
-  - Define props interface
+  - Define props interface by extending root element/component props
   - Include variant and size types
   - Add JSDoc comments
 
@@ -47,6 +47,8 @@ How to use these templates:
 - **No feature-specific state:** keep primitives simple.
 - **Accessibility first:** add semantic HTML, labels, keyboard behavior, and visible focus.
 - **Variants and sizes:** cover expected design-system use cases.
+- **Root props:** use DOM props only for DOM primitives; Ark primitives inherit target Ark Root/part props.
+- **Slots:** for Ark compound controls, expose styled slots instead of sealing indicators/items/thumbs.
 - **Tests:** test behavior, not implementation details.
 
 ## Reference

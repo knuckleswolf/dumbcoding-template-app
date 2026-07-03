@@ -8,10 +8,10 @@ export default {
       to: { path: '^src/features/' },
     },
     {
-      name: 'ui-must-not-import-product-layers',
+      name: 'ui-must-not-import-project-layers',
       severity: 'error',
       from: { path: '^src/ui/' },
-      to: { path: '^src/(features|components|routes)/' },
+      to: { path: '^src/(features|components|routes|lib)/' },
     },
     {
       name: 'features-must-not-import-routes',
@@ -20,10 +20,16 @@ export default {
       to: { path: '^src/routes/' },
     },
     {
-      name: 'lib-must-not-import-product-ui-or-routes',
+      name: 'utils-must-not-import-project-layers',
+      severity: 'error',
+      from: { path: '^src/utils/' },
+      to: { path: '^src/(lib|ui|components|features|routes)/' },
+    },
+    {
+      name: 'lib-must-not-import-ui-or-product-layers',
       severity: 'error',
       from: { path: '^src/lib/' },
-      to: { path: '^src/(components|features|routes)/' },
+      to: { path: '^src/(ui|components|features|routes)/' },
     },
   ],
   options: {

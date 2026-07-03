@@ -30,7 +30,7 @@ Before implementation, write a short map:
 - Ark UI MCP lookup, Ark parts, Tailwind strategy; document native/global CSS exceptions
 - API domains/endpoints to create/change with `create-api-layer`
 - feature core files under `src/features/[feature-name]`
-- shared `lib`, `hooks`, `utils`, schemas, tests, E2E/a11y checks
+- shared `lib`, `hooks`, `utils`, schemas, tests, E2E/a11y checks; keep product projections out of `lib`
 - risks: auth, security, privacy, persistence, idempotency, accessibility, rollout
 
 Ask for plan approval before implementation in feature threads.
@@ -66,7 +66,8 @@ src/features/[feature-name]/
     └── [feature-name].model.test.ts
 ```
 
-Copy only files that are needed. Use `[feature-name].tsx` only as a mountable feature entry. Reusable
+Copy only files that are needed. Use `[feature-name].tsx` as the capability entry that owns feature
+state orchestration; it must not be a thin pass-through to one product/workbench component. Reusable
 UI goes in `src/components/*`; route host logic and multi-feature screen placement stay in routes.
 
 ## Responsibilities
@@ -79,8 +80,8 @@ UI goes in `src/components/*`; route host logic and multi-feature screen placeme
 - `*.hooks.ts`: feature-scoped hooks that bind model/state/API for consumers.
 - `index.ts`: public feature API only.
 
-Move portable infrastructure and shared domain contracts to `src/lib` or `src/types`, generic helpers
-to `src/utils`, and cross-feature hooks to `src/hooks`. Keep API transport in `src/lib/api`.
+Move project/runtime functional code, serialization, storage, API helpers, and stable algorithms to
+`src/lib`; keep copy, options, state, view-models, workflows, and all UI in features/components.
 
 ## Skill Routing
 
@@ -109,6 +110,7 @@ to `src/utils`, and cross-feature hooks to `src/hooks`. Keep API transport in `s
 
 - Do not put a route-screen or full JSX surface in `src/features/*`.
 - Do not force a cohesive feature entry into `src/components/*` just to keep `features` headless.
+- Do not create a feature entry that only calls hooks and forwards everything into one component.
 - Do not create a feature-local UI island under `src/features/*/internal` when blocks should be shared.
 - Do not use native select/range/dialog/popover/menu/etc. when Ark UI fits, unless the reason is documented.
 - Do not create reusable product components inside the feature folder.

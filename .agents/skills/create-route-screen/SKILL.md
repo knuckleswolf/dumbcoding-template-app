@@ -58,8 +58,8 @@ Ark UI > native DOM.
 6. Use `create-ui-primitive` for domain-agnostic primitives under `src/ui/*`.
 7. Build missing lower-layer dependencies before assembling the route-screen.
 8. Keep multi-feature screen composition in the route. If the screen is one cohesive capability, the
-   route may mount that feature entry. Do not create `src/components/*` shells whose main job is
-   assembling route regions.
+   route may mount that feature entry, but the entry must own capability orchestration. Do not create
+   `src/components/*` workbench/shell components whose main job is assembling route regions.
 9. Keep route JSX shallow: compose named blocks instead of rendering every control inline; use Tailwind utilities, not feature-specific global CSS.
 10. Add route E2E/a11y tests when behavior is user-facing; add component/model tests near modules.
 

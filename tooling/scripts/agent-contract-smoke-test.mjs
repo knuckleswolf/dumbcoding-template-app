@@ -102,8 +102,11 @@ const requiredDocMarkers = [
       'project-intake` skill using `docs/brief.md`, then create `docs/product.md`',
       'route-screen > feature capability/entry > product component > UI primitive > Ark UI > native DOM',
       'Components and UI primitives must not import from `src/features/*`',
+      '`src/lib` and `src/utils` contain no UI',
       'Use Tailwind utilities for feature/component styling',
       'Use Ark UI through `src/ui/*` primitives',
+      'UI primitives are styled slot APIs',
+      'move stable shared contracts to `src/lib` or `src/types`',
       'Use Zod for runtime validation schemas',
       'Before implementing Ark-based primitives/components',
     ],
@@ -127,19 +130,19 @@ const requiredDocMarkers = [
   },
   {
     path: '.agents/skills/create-feature/SKILL.md',
-    markers: ['UI primitive inventory', 'Ark UI MCP lookup', 'zero Ark UI or zero primitives has an approved exception'],
+    markers: ['thin pass-through', 'all UI in features/components', 'zero Ark UI or zero primitives has an approved exception'],
   },
   {
     path: '.agents/skills/create-route-screen/SKILL.md',
-    markers: ['TanStack route file is the screen boundary', 'route may mount that feature entry', 'src/components/*` shells'],
+    markers: ['TanStack route file is the screen boundary', 'route may mount that feature entry', 'workbench/shell components'],
   },
   {
     path: '.agents/skills/create-component/SKILL.md',
-    markers: ['Components must not import `src/features/*`', 'Check existing project UI primitives', 'Style with Tailwind/shared primitives'],
+    markers: ['Components must not import `src/features/*`', 'slot-first `src/ui/*` primitive wrapper', 'Style with Tailwind/shared primitives'],
   },
   {
     path: '.agents/skills/create-ui-primitive/SKILL.md',
-    markers: ['inspect `package.json`, existing UI folders, and the configured Ark UI', 'Use Ark UI by default', 'wrap/style/adapt Ark parts'],
+    markers: ['inspect `package.json`, existing UI folders, and the configured Ark UI', 'Prefer slot-first APIs', 'target Ark Root/part type'],
   },
 ];
 
