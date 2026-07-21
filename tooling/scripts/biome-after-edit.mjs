@@ -1,11 +1,18 @@
 #!/usr/bin/env node
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { extname } from 'node:path';
+import { dirname, extname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// The js workspace root (this script lives in <js root>/tooling/scripts).
+// Hooks run from the repo root, so both the package-manager detection and
+// the biome invocation must anchor here, not on the caller's cwd.
+const JS_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 function detectPackageManager() {
-  if (existsSync('pnpm-lock.yaml')) return 'pnpm';
-  if (existsSync('yarn.lock') && existsSync('.yarnrc.yml')) return 'yarn';
+  if (existsSync(resolve(JS_ROOT, 'pnpm-lock.yaml'))) return 'pnpm';
+  if (existsSync(resolve(JS_ROOT, 'yarn.lock')) && existsSync(resolve(JS_ROOT, '.yarnrc.yml')))
+    return 'yarn';
   return 'pnpm';
 }
 

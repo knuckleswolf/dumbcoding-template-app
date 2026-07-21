@@ -1,22 +1,14 @@
 personality = "pragmatic"
-model = "gpt-5.5"
-approval_policy = "on-request"
 
-[features]
-multi_agent = true
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
+
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
 
 [agents]
 max_threads = 4
 max_depth = 1
-
-# Keep local role config aligned with runtime-supported agent types.
-[agents.explorer]
-description = "Read-only analysis and review for architecture, dependency, and risk checks."
-config_file = "agents/explorer.toml"
-
-[agents.worker]
-description = "Implementation agent scoped to one package or one non-overlapping write set."
-config_file = "agents/worker.toml"
 
 [mcp_servers.ark-ui]
 command = "npx"
