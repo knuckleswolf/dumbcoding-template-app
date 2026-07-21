@@ -39,8 +39,11 @@ Safety defaults:
 - requires a clean worktree before apply unless `--allow-dirty` is passed;
 - syncs only the hardcoded allowlist;
 - stages all upstream files and merged `package.json` under local `.temp` before applying;
+- reports `add`, `modify`, `remove`, and `unchanged` files in the allowlisted paths;
 - skips `.DS_Store`;
-- does not prune removed upstream files unless `--prune` is passed.
+- does not prune removed upstream files unless `--prune` is passed;
+- on apply, updates `tooling/scripts/sync-agent-contract.mjs` first and restarts with the same
+  arguments before applying any other changes.
 
 Useful options:
 

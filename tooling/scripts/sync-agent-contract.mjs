@@ -18,6 +18,8 @@ import { fileURLToPath } from 'node:url';
 const workspaceRoot = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
 const tempRoot = join(workspaceRoot, '.temp');
 const DEFAULT_SOURCE = 'https://github.com/knuckleswolf/dumbcoding-template-app.git';
+const SELF_UPDATE_PATH = 'tooling/scripts/sync-agent-contract.mjs';
+const SELF_UPDATE_ENV = 'SYNC_AGENT_CONTRACT_RESTARTED';
 
 const BASE_PATHS = [
   '.agents',
@@ -66,7 +68,7 @@ Options:
   --include-package-json  Merge scripts and dependency versions, then run pnpm install.
   --list-paths            Print the allowlist and exit.
   --path <path>           Sync one allowlisted path. Repeatable.
-  --prune                 Remove local allowlisted path before copying upstream version.
+  --prune                 Remove local files missing from the upstream allowlisted paths.
   --ref <ref>             Fetch a specific branch, tag, or commit.
   --source <url>          Git source. Default: ${DEFAULT_SOURCE}
   --help                  Show this help.
@@ -138,7 +140,7 @@ function run(command, args, cwd = workspaceRoot) {
 }
 
 function ensureCleanWorktree() {
-  if (!options.apply || options.allowDirty) return;
+  if (!options.apply || options.allowDirty || process.env[SELF_UPDATE_ENV] === '1') return;
 
   const status = run('git', ['status', '--porcelain']).trim();
   if (status) {
@@ -210,9 +212,31 @@ function classifyFile(stagedRoot, relativePath) {
   const sourceContent = readIfExists(sourceFile);
   const targetContent = readIfExists(targetFile);
 
+  if (!sourceContent && targetContent) return 'remove';
   if (!sourceContent) return 'missing-source';
   if (!targetContent) return 'add';
   return sourceContent.equals(targetContent) ? 'unchanged' : 'modify';
+}
+
+function restartWithUpdatedScript(stagedRoot, changes) {
+  if (!options.apply || !(changes.get('modify') ?? []).includes(SELF_UPDATE_PATH)) return false;
+
+  const stagedScriptPath = join(stagedRoot, SELF_UPDATE_PATH);
+  const workspaceScriptPath = join(workspaceRoot, SELF_UPDATE_PATH);
+  cpSync(stagedScriptPath, workspaceScriptPath, {
+    dereference: false,
+    errorOnExist: false,
+    force: true,
+  });
+
+  console.log(`self-update: copied ${SELF_UPDATE_PATH}; restarting sync`);
+  execFileSync(process.execPath, [workspaceScriptPath, ...process.argv.slice(2)], {
+    cwd: workspaceRoot,
+    env: { ...process.env, [SELF_UPDATE_ENV]: '1' },
+    stdio: 'inherit',
+  });
+
+  return true;
 }
 
 function readJson(path) {
@@ -286,11 +310,12 @@ function stagePath(sourceRoot, stagedRoot, path) {
 function copyStagedPath(stagedRoot, path) {
   const sourcePath = join(stagedRoot, path);
   const targetPath = join(workspaceRoot, path);
-  if (!existsSync(sourcePath)) return;
 
   if (options.prune && existsSync(targetPath)) {
     rmSync(targetPath, { force: true, recursive: true });
   }
+
+  if (!existsSync(sourcePath)) return;
 
   cpSync(sourcePath, targetPath, {
     dereference: false,
@@ -322,7 +347,7 @@ const sourceRoot = cloneSource(allowedPaths);
 const stagedRoot = createWorkspaceTempDir('agent-contract-stage');
 const copiedPaths = [];
 const missingPaths = [];
-const scannedFiles = [];
+const scannedFiles = new Set();
 
 try {
   for (const path of allowedPaths) {
@@ -333,7 +358,15 @@ try {
     }
 
     stagePath(sourceRoot, stagedRoot, path);
-    scannedFiles.push(...(await listFiles(stagedRoot, path)));
+    for (const relativePath of await listFiles(stagedRoot, path)) {
+      scannedFiles.add(relativePath);
+    }
+  }
+
+  for (const path of allowedPaths) {
+    for (const relativePath of await listFiles(workspaceRoot, path)) {
+      scannedFiles.add(relativePath);
+    }
   }
 
   const changes = new Map();
@@ -343,27 +376,38 @@ try {
     changes.get(status).push(relativePath);
   }
 
-  if (options.apply) {
-    for (const path of allowedPaths) {
-      copyStagedPath(stagedRoot, path);
-      copiedPaths.push(path);
+  for (const files of changes.values()) {
+    files.sort();
+  }
+
+  const restarted = restartWithUpdatedScript(stagedRoot, changes);
+
+  if (!restarted) {
+    if (options.apply) {
+      for (const path of allowedPaths) {
+        copyStagedPath(stagedRoot, path);
+        copiedPaths.push(path);
+      }
     }
-  }
 
-  console.log(options.apply ? 'agent contract sync applied' : 'agent contract sync dry-run');
-  console.log(`source: ${options.source}${options.ref ? `#${options.ref}` : ''}`);
+    console.log(options.apply ? 'agent contract sync applied' : 'agent contract sync dry-run');
+    console.log(`source: ${options.source}${options.ref ? `#${options.ref}` : ''}`);
 
-  for (const status of ['add', 'modify', 'unchanged']) {
-    const files = changes.get(status) ?? [];
-    if (files.length > 0) printList(`${status}:`, files);
-  }
+    for (const status of ['add', 'modify', 'remove', 'unchanged']) {
+      const files = changes.get(status) ?? [];
+      if (files.length > 0) printList(`${status}:`, files);
+    }
 
-  if (missingPaths.length > 0) printList('missing upstream paths:', missingPaths);
-  if (copiedPaths.length > 0) printList('copied allowlist roots:', copiedPaths);
-  if (options.apply && options.includePackageJson) {
-    console.log('package.json was included; run `pnpm install` to reconcile pnpm-lock.yaml.');
+    if (missingPaths.length > 0) printList('missing upstream paths:', missingPaths);
+    if (copiedPaths.length > 0) printList('copied allowlist roots:', copiedPaths);
+    if ((changes.get('remove') ?? []).length > 0 && !options.prune) {
+      console.log('upstream removals were preserved; pass --prune with --apply to remove them');
+    }
+    if (options.apply && options.includePackageJson) {
+      console.log('package.json was included; run `pnpm install` to reconcile pnpm-lock.yaml.');
+    }
+    if (!options.apply) console.log('pass --apply to write these allowlisted paths');
   }
-  if (!options.apply) console.log('pass --apply to write these allowlisted paths');
 } finally {
   rmSync(stagedRoot, { force: true, recursive: true });
   rmSync(sourceRoot, { force: true, recursive: true });
