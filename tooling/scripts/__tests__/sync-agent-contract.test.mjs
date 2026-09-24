@@ -70,6 +70,33 @@ afterEach(() => {
 });
 
 describe('sync-agent-contract', () => {
+  it('syncs the dependency changelog through its allowlisted root', () => {
+    const upstream = createUpstream({ 'CHANGELOG.md': '# Dependency migrations\n' });
+    const { root, scriptPath } = createWorkspace({});
+
+    const dryRunOutput = runSync(scriptPath, [
+      '--source',
+      upstream,
+      '--path',
+      'CHANGELOG.md',
+    ]);
+
+    expect(dryRunOutput).toContain('add:\n- CHANGELOG.md');
+    expect(dryRunOutput).toContain('review CHANGELOG.md for dependency migrations');
+    expect(existsSync(join(root, 'CHANGELOG.md'))).toBe(false);
+
+    runSync(scriptPath, [
+      '--source',
+      upstream,
+      '--path',
+      'CHANGELOG.md',
+      '--apply',
+      '--allow-dirty',
+    ]);
+
+    expect(readFileSync(join(root, 'CHANGELOG.md'), 'utf8')).toBe('# Dependency migrations\n');
+  });
+
   it('reports and copies a file added to an existing allowlisted directory', () => {
     const upstream = createUpstream({
       '.agents/added.md': 'upstream only\n',

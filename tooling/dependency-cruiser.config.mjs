@@ -40,6 +40,7 @@ export default {
   ],
   options: {
     doNotFollow: { path: 'node_modules|src/routeTree\\.gen\\.ts' },
+    parser: 'swc',
     tsPreCompilationDeps: true,
     combinedDependencies: true,
     preserveSymlinks: false,

@@ -120,6 +120,7 @@ Agent and skill docs must describe reusable architecture and workflow. If a futu
 - Pin dependency versions exactly in `package.json`. Do not use `latest`, `^`, or `~`.
 - Use `pnpm add <pkg>@<version> --save-exact` for dependency changes. Use plain `pnpm install` only when intentionally reconciling `package.json` with `pnpm-lock.yaml`.
 - Audit dependency freshness every few weeks or after meaningful template changes; update intentionally in a dedicated dependency-maintenance change.
+- Record dependency migrations in `CHANGELOG.md`, which `sync:agent-contract` copies by default. Before opting into its `package.json` merge, read the relevant changelog entry and migrate local runtime/config/product code that the allowlist does not copy.
 - Prefer existing stack capabilities before adding a package or writing custom infrastructure.
 - Missing `node_modules` is an environment setup issue, not a reason to bypass installed stack decisions from `package.json`.
 - Use Ark UI through `src/ui/*` primitives for accessible interactive controls: select, combobox, tabs, dialog, popover, menu, tooltip, checkbox, radio group, slider, progress, pagination, accordion, and related controls. Native elements require a documented exception.

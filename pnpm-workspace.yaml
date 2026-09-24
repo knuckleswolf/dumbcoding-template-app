@@ -1,6 +1,17 @@
 packages:
   - .
 
-onlyBuiltDependencies:
-  - esbuild
-  - lightningcss
+minimumReleaseAgeExclude:
+  - '@tanstack/devtools@0.15.0'
+  - '@tanstack/react-devtools@0.10.13'
+  - '@tanstack/react-router@1.170.39'
+  - '@tanstack/react-start-client@1.168.37'
+  - '@tanstack/react-start-rsc@0.1.57'
+  - '@tanstack/react-start-server@1.167.44'
+  - '@tanstack/react-start@1.168.58'
+  - lucide-react@1.48.0
+
+allowBuilds:
+  '@swc/core': true
+  esbuild: true
+  lightningcss: true

@@ -15,18 +15,22 @@ agent docs, brief docs, or the `tooling` folder.
    changes might be replaced.
 2. Run a dry-run:
    `pnpm sync:agent-contract`
-3. Decide optional files:
+3. Read `CHANGELOG.md` in the dry-run and identify migrations relevant to the local project.
+   It is part of the default allowlist. Review any local `CHANGELOG.md` edits before applying.
+4. Decide optional files:
    - `package.json`: keep optional because it can change scripts, dependencies, runtime versions, and
      lockfile expectations. Include it only when syncing dependency/script policy intentionally.
      The script keeps local `name`, adds or updates scripts, and adds or updates dependency versions
      from upstream dependency sections.
-4. Apply only after reviewing the dry-run:
+5. Apply only after reviewing the dry-run:
    `pnpm sync:agent-contract --apply --include-package-json`
-5. If `package.json` was included, run `pnpm install` to reconcile `pnpm-lock.yaml`; this is an
-   intentional lockfile update, not a frozen prepare install.
-6. Review `git diff`. Keep only reusable template/agent contract changes; do not keep upstream
+6. If `package.json` was included, run `pnpm install` to reconcile `pnpm-lock.yaml`; this is an
+   intentional lockfile update, not a frozen prepare install. Merge runtime/config changes from
+   `CHANGELOG.md` manually: the package merge does not copy `engines`, `pnpm-workspace.yaml`,
+   Dockerfile, Vite/Vitest configs, or product code.
+7. Review `git diff`. Keep only reusable template/agent contract changes; do not keep upstream
    product-specific content.
-7. Verify with `pnpm test:agents`. If `package.json`, tooling, or config changed, run
+8. Verify with `pnpm test:agents`. If `package.json`, tooling, or config changed, run
    `pnpm verify -- <changed files...>`.
 
 ## Script

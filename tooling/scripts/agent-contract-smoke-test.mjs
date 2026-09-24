@@ -7,6 +7,7 @@ const errors = [];
 
 const requiredPaths = [
   '.mcp.json',
+  'CHANGELOG.md',
   'docs/brief.md',
   '.agents/skills/create-component/templates/[component-name]/[component-name].tsx.template',
   '.agents/skills/create-component/templates/[component-name]/[component-name].types.ts.template',
@@ -113,6 +114,7 @@ const requiredDocMarkers = [
       'move stable shared contracts to `src/lib` or `src/types`',
       'Use Zod for runtime validation schemas',
       'Before implementing Ark-based primitives/components',
+      '`CHANGELOG.md`',
     ],
   },
   {
@@ -164,6 +166,7 @@ const requiredDocMarkers = [
       'keeps local `name`',
       'adds or updates scripts',
       'local `.temp`',
+      '`CHANGELOG.md`',
     ],
   },
 ];

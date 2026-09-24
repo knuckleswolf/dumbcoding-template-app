@@ -28,6 +28,7 @@ const BASE_PATHS = [
   '.mcp.json',
   'AGENTS.md',
   'API_CONVENTION.md',
+  'CHANGELOG.md',
   'CONVENTION.md',
   'docs/brief.md',
   'docs/features/README.md',
@@ -65,7 +66,7 @@ Fetch agent instructions/settings from the template upstream allowlist.
 Options:
   --apply                 Write files. Default is dry-run.
   --allow-dirty           Allow applying with local uncommitted changes.
-  --include-package-json  Merge scripts and dependency versions, then run pnpm install.
+  --include-package-json  Merge scripts and dependency versions; reconcile the lockfile afterward.
   --list-paths            Print the allowlist and exit.
   --path <path>           Sync one allowlisted path. Repeatable.
   --prune                 Remove local files missing from the upstream allowlisted paths.
@@ -405,6 +406,9 @@ try {
     }
     if (options.apply && options.includePackageJson) {
       console.log('package.json was included; run `pnpm install` to reconcile pnpm-lock.yaml.');
+    }
+    if (allowedPaths.includes('CHANGELOG.md') || options.includePackageJson) {
+      console.log('review CHANGELOG.md for dependency migrations before verifying the project');
     }
     if (!options.apply) console.log('pass --apply to write these allowlisted paths');
   }

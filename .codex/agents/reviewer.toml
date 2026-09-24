@@ -3,7 +3,7 @@ description = "Independent review agent for evaluating a completed change agains
 
 nickname_candidates = ["Reviewer", "Auditor", "Sentinel"]
 
-model = "gpt-5.6-sol"
+model = "gpt-6-sol"
 model_reasoning_effort = "high"
 
 sandbox_mode = "read-only"
